@@ -1,0 +1,57 @@
+import { withAuth } from "nextjs-auth-middleware";
+import { authChecker } from "@/lib/auth-check";
+import { ROUTES, USER_ROLES } from "@/constants";
+
+export default withAuth({
+    publicRoutes: [
+        ROUTES.PUBLIC.USER_LOGIN,
+        ROUTES.PUBLIC.USER_SIGNUP,
+        ROUTES.PUBLIC.RECRUITER_LOGIN,
+        ROUTES.PUBLIC.RECRUITER_SIGNUP,
+        "/auth/otp-verify",
+        "/auth/forgot-password",
+    ],
+
+    protectedRoutes: [
+        ROUTES.PROTECTED.USER_DASHBOARD,
+        ROUTES.PROTECTED.RECRUITER_DASHBOARD,
+    ],
+
+    callbacks: {
+        onAuth: async (req) => {
+            const user = authChecker(req);
+
+            return {
+                isAuthorized: !!user,
+                user,
+            };
+        },
+
+        onRedirect: async (req, handle, data) => {
+            const user = data.user;
+
+            // Logged-in user going to login/signup → redirect to dashboard
+            if (user && req.nextUrl.pathname.startsWith("/auth")) {
+                const url =
+                    user.role === USER_ROLES.RECRUITER
+                        ? ROUTES.PROTECTED.RECRUITER_DASHBOARD
+                        : ROUTES.PROTECTED.USER_DASHBOARD;
+
+                return handle.redirect(url);
+            }
+
+            // Unauthenticated → redirect to login page
+            if (!user) {
+                const isRecruiter = req.nextUrl.pathname.startsWith("/recruiter");
+
+                const url = isRecruiter
+                    ? ROUTES.PUBLIC.RECRUITER_LOGIN
+                    : ROUTES.PUBLIC.USER_LOGIN;
+
+                return handle.redirect(url);
+            }
+
+            return handle.next();
+        },
+    },
+});
