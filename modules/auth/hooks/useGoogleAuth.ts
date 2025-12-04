@@ -1,0 +1,56 @@
+"use client"
+
+import { useState } from 'react';
+import { CredentialResponse } from '@react-oauth/google';
+import { userApi as axiosInstance } from '@/lib/user.api';
+import { API_ROUTES, USER_ROLES, UserRole } from '@/constants';
+
+interface UseGoogleAuthProps {
+    role?: UserRole;
+    onSuccess?: (data: any) => void;
+    onError?: (error: any) => void;
+}
+
+export function useGoogleAuth({ role = USER_ROLES.USER, onSuccess, onError }: UseGoogleAuthProps = {}) {
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    const handleGoogleLogin = async (credentialResponse: CredentialResponse) => {
+        try {
+            setIsLoading(true);
+            setError(null);
+
+            if (!credentialResponse.credential) {
+                throw new Error('No credential received from Google');
+            }
+
+            const apiRoute = role === USER_ROLES.RECRUITER
+                ? API_ROUTES.AUTH.RECRUITER.GOOGLE
+                : API_ROUTES.AUTH.USER.GOOGLE;
+
+            const response = await axiosInstance.post(apiRoute, {
+                credential: credentialResponse.credential,
+            });
+
+            onSuccess?.(response.data);
+
+            return response.data;
+        } catch (err: any) {
+            const errorMessage = err.response?.data?.error?.message || 'Google authentication failed';
+            setError(errorMessage);
+            console.error('Failed to authenticate with Google:', err);
+
+            onError?.(err);
+
+            throw err;
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    return {
+        handleGoogleLogin,
+        isLoading,
+        error,
+    };
+}
