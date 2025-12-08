@@ -6,22 +6,16 @@ export async function proxy(request: NextRequest) {
     const sessionId = request.cookies.get("session_id");
     const { pathname } = request.nextUrl;
 
-    console.log("proxy middleware working, path is ->", pathname)
+    console.log("middleware working →", pathname);
 
-    if (pathname.includes("/auth/")) {
-        const res = NextResponse.next();
-        res.headers.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
-        return res;
-    }
-
-    let inferredPrefix: string | null = null;
     const prefixMap: Record<string, string> = {
-        '/users': 'users',
-        '/admin': 'admin',
-        '/recruiter': 'recruiter',
+        "/users": "users",
+        "/admin": "admin",
+        "/recruiter": "recruiter",
     };
 
-    for (const [prefix, _] of Object.entries(prefixMap)) {
+    let inferredPrefix: string | null = null;
+    for (const prefix of Object.keys(prefixMap)) {
         if (pathname.startsWith(prefix)) {
             inferredPrefix = prefix;
             break;
@@ -29,10 +23,7 @@ export async function proxy(request: NextRequest) {
     }
 
     const getLoginUrl = (prefix: string | null) => {
-        if (prefix) {
-            return new URL(`${prefix}/auth/login`, request.url);
-        }
-        return new URL("/login", request.url);
+        return new URL(`${prefix ? prefix : ""}/auth/login`, request.url);
     };
 
     if (!accessToken && !sessionId) {
@@ -40,38 +31,58 @@ export async function proxy(request: NextRequest) {
     }
 
     if (accessToken) {
+        // const checkUser = await 
         return NextResponse.next();
     }
 
     if (sessionId && inferredPrefix) {
-        const origin = request.nextUrl.origin;
-        const refreshPath = `${inferredPrefix}/auth/refresh`;
         try {
-            const refreshResponse = await fetch(`${origin}/${refreshPath}`, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
+            const refreshResponse = await fetch(
+                `${request.nextUrl.origin}/api/auth/refresh?role=${prefixMap[inferredPrefix]}`,
+                {
+                    method: "POST",
+                    credentials: "include",
+                    headers: {
+                        cookie: request.headers.get("cookie") ?? "",
+                    },
+                }
+            );
 
             if (refreshResponse.ok) {
                 const data = await refreshResponse.json();
+
                 if (data.success) {
-                    const response = NextResponse.next();
+                    const response = NextResponse.redirect(request.nextUrl);
+
                     refreshResponse.headers.forEach((value, key) => {
-                        if (key.toLowerCase() === 'set-cookie') {
-                            response.headers.append(key, value);
+                        if (key.toLowerCase() === "set-cookie") {
+                            response.headers.append("Set-Cookie", value);
                         }
                     });
+
                     return response;
                 }
             }
 
-            return NextResponse.redirect(getLoginUrl(inferredPrefix));
-        } catch (error) {
-            console.error('Auth refresh error:', error);
-            return NextResponse.redirect(getLoginUrl(inferredPrefix));
+            const response = NextResponse.redirect(getLoginUrl(inferredPrefix));
+
+            response.cookies.set("session_id", "", {
+                expires: new Date(0),
+                path: "/",
+            });
+
+            return response;
+
+        } catch (err) {
+
+            const response = NextResponse.redirect(getLoginUrl(inferredPrefix));
+
+            response.cookies.set("session_id", "", {
+                expires: new Date(0),
+                path: "/",
+            });
+
+            return response;
         }
     }
 
