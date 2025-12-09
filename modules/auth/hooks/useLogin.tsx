@@ -13,6 +13,7 @@ import { loginSchema } from "../validation/login-schema.validation";
 import { getAuthService } from "@/services/auth-service";
 import { ROUTES, USER_ROLES, UserRole } from "@/constants";
 import { redirect } from "../utils/redirect";
+import { useAuthStore } from "@/stores/auth-store";
 
 export const useLogin = ({
   role = "user",
@@ -21,6 +22,7 @@ export const useLogin = ({
   onSocialLogin,
 }: UseLoginProps) => {
   const router = useRouter();
+  const { login } = useAuthStore();
   const [form, setForm] = useState<{ email: string; password: string }>({
     email: "",
     password: "",
@@ -47,11 +49,17 @@ export const useLogin = ({
       console.log("is getting the credentials", credentials)
       const response = await authService.login(credentials);
 
+
+
+      login(response.user);
+
       toast.success("Login successful!");
 
       const dashboardRoute = role === USER_ROLES.RECRUITER
         ? ROUTES.PROTECTED.RECRUITER_DASHBOARD
-        : ROUTES.PROTECTED.USER_DASHBOARD;
+        : role === USER_ROLES.ADMIN
+          ? ROUTES.PROTECTED.ADMIN_DASHBOARD
+          : ROUTES.PROTECTED.USER_DASHBOARD;
 
       redirect(dashboardRoute);
 
