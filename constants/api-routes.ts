@@ -18,6 +18,14 @@ export const API_ROUTES = {
             OTP_VERIFY: '/auth/recruiter/otp-verify',
             RESEND_OTP: '/auth/recruiter/resend-otp',
         },
+        ADMIN: {
+            LOGIN: '/auth/admin/login',
+            SIGNUP: '/auth/admin/signup',
+            LOGOUT: '/auth/admin/logout',
+            REFRESH: '/auth/admin/refresh',
+            OTP_VERIFY: '/auth/admin/otp-verify',
+            RESEND_OTP: '/auth/admin/resend-otp',
+        },
     },
 } as const;
 
