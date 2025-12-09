@@ -15,7 +15,7 @@ export const RecruiterAuthService = {
         return response.data;
     },
 
-    signup: async (data: Omit<SignupPayload, 'role'>): Promise<AuthResponse> => {
+    signup: async (data: Omit<SignupPayload, 'role' | 'confirmPassword'>): Promise<AuthResponse> => {
         const response = await recruiterApi.post<AuthResponse>(API_ROUTES.AUTH.RECRUITER.SIGNUP, data);
         return response.data;
     },
