@@ -1,18 +1,9 @@
-"use client";
+import NavbarWrapper from "@/components/navbar-wrapper";
 
-import { Navbar } from "@/components/navbar";
-import { useAuth } from "@/providers/auth-provider";
-
-export function AppLayout({ children }: { children: React.ReactNode }) {
-    const { isAuthenticated, user, logout } = useAuth();
-
+export default function AppLayout({ children }: { children: React.ReactNode }) {
     return (
         <>
-            <Navbar
-                isAuthenticated={isAuthenticated}
-                userName={user?.name}
-                onLogout={logout}
-            />
+            <NavbarWrapper />
             <main>{children}</main>
         </>
     );
