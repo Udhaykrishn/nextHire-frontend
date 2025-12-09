@@ -13,11 +13,15 @@ import {
     REGEXP_ONLY_DIGITS_STR,
 } from "@/ui/input-otp";
 
-const OtpVerifyPage: React.FC = () => {
+interface OtpVerifyPageProps {
+    role?: string;
+}
+
+const OtpVerifyPage: React.FC<OtpVerifyPageProps> = ({ role: propRole }) => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const email = searchParams?.get("email") ?? "";
-    const role = (searchParams?.get("role") as any) ?? "user";
+    const role = propRole ?? (searchParams?.get("role") as any) ?? "user";
 
     const { otp, handleChange, errors, isLoading, handleSubmit, handleResend } = useOtpVerify({ email, role });
 
