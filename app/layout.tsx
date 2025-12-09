@@ -36,7 +36,7 @@ export default function RootLayout({
         <GoogleAuthProvider>
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
+            defaultTheme="light"
             enableSystem
             disableTransitionOnChange
           >
@@ -49,6 +49,6 @@ export default function RootLayout({
           </ThemeProvider>
         </GoogleAuthProvider>
       </body>
-    </html>
+    </html >
   );
 }
