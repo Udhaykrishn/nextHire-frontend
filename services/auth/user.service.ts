@@ -10,13 +10,11 @@ export interface AuthResponse {
 }
 export const UserAuthService = {
     login: async (data: Omit<LoginFormData, 'role'>): Promise<AuthResponse> => {
-        console.log("user auth service is working: ", data)
         const response = await userApi.post<AuthResponse>(API_ROUTES.AUTH.USER.LOGIN, data);
-        console.log("user login backend res is: ", response.data)
         return response.data;
     },
 
-    signup: async (data: Omit<SignupPayload, 'role'>): Promise<AuthResponse> => {
+    signup: async (data: Omit<SignupPayload, 'role' | 'confirmPassword'>): Promise<AuthResponse> => {
         const response = await userApi.post<AuthResponse>(API_ROUTES.AUTH.USER.SIGNUP, data);
         return response.data;
     },
