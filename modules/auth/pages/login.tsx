@@ -120,7 +120,13 @@ const LoginPage: React.FC<UseLoginProps> = (props) => {
 
 
 
-          <RedirectLink label="Don't have an account?" context="Sign Up" link={role === USER_ROLES.USER ? "/users/auth/signup" : "/recruiter/auth/signup"} />
+          {role !== USER_ROLES.ADMIN && (
+            <RedirectLink
+              label="Don't have an account?"
+              context="Sign Up"
+              link={role === USER_ROLES.USER ? "/users/auth/signup" : "/recruiter/auth/signup"}
+            />
+          )}
         </CardContent>
       </Card>
     </div>

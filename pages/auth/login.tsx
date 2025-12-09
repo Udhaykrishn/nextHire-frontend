@@ -2,7 +2,6 @@
 
 import LoginPage from "@/modules/auth/pages/login"
 import { Suspense } from "react"
-import { AppLayout } from "@/components/app-layout"
 
 const LoginContent = () => {
     return (
@@ -17,11 +16,9 @@ const LoginContent = () => {
 
 export const LoginClient = () => {
     return (
-        <AppLayout>
-            <Suspense fallback={<div>Loading...</div>}>
-                <LoginContent />
-            </Suspense>
-        </AppLayout>
+        <Suspense fallback={<div>Loading...</div>}>
+            <LoginContent />
+        </Suspense>
     )
 }
 
