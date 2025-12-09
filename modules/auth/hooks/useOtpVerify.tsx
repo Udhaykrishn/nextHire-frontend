@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { getAuthService } from "@/services/auth-service";
 import { ROUTES, USER_ROLES, UserRole } from "@/constants";
-import { redirect } from "../utils/redirect";
 
 interface UseOtpVerifyProps {
     email: string;
@@ -35,6 +34,7 @@ export const useOtpVerify = ({ email, role = "user" }: UseOtpVerifyProps) => {
         setIsLoading(true);
         try {
             const authService = getAuthService(role as UserRole);
+            console.log("auth is: ", authService, role)
             const response = await authService.verifyOtp({ email, otp });
 
             toast.success("OTP verified successfully!");
@@ -43,10 +43,10 @@ export const useOtpVerify = ({ email, role = "user" }: UseOtpVerifyProps) => {
                 ? ROUTES.PROTECTED.RECRUITER_DASHBOARD
                 : ROUTES.PROTECTED.USER_DASHBOARD;
 
-            redirect(dashboardRoute);
+            router.push(dashboardRoute);
         } catch (error: any) {
             console.error("OTP verification failed:", error);
-            const errorMessage = error.response?.data?.message || "Invalid OTP. Please try again.";
+            const errorMessage = error.response?.data?.error?.message || error.response?.data?.message || "Invalid OTP. Please try again.";
             toast.error(errorMessage);
             setErrors({ root: errorMessage });
         } finally {
@@ -62,7 +62,8 @@ export const useOtpVerify = ({ email, role = "user" }: UseOtpVerifyProps) => {
             toast.success("OTP resent successfully!");
         } catch (error: any) {
             console.error("Resend OTP failed:", error);
-            toast.error("Failed to resend OTP. Please try again.");
+            const errorMessage = error.response?.data?.error?.message || error.response?.data?.message || "Failed to resend OTP. Please try again.";
+            toast.error(errorMessage);
         } finally {
             setIsLoading(false);
         }
