@@ -1,6 +1,6 @@
 import { createApiInstance } from "./axios";
 
 export const adminApi = createApiInstance({
-    refreshUrl: "/admin/auth/refresh",
+    refreshUrl: "/auth/admin/refresh",
     loginRedirect: "/admin/auth/login",
 });
