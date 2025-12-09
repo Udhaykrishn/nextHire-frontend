@@ -10,6 +10,7 @@ import {
   LogIn,
   UserPlus,
   Phone,
+  Building2,
   LucideProps
 } from "lucide-react";
 
@@ -24,6 +25,7 @@ export const Icons = {
   login: (props: IconProps) => <LogIn {...props} />,
   userPlus: (props: IconProps) => <UserPlus {...props} />,
   phone: (props: IconProps) => <Phone {...props} />,
+  building: (props: IconProps) => <Building2 {...props} />,
 
   google: (props: React.SVGProps<SVGSVGElement>) => (
     <svg {...props} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
