@@ -54,8 +54,6 @@ import {
 } from '@/ui/avatar';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Separator } from '@radix-ui/react-separator';
-import { AppLayout } from '@/components/app-layout';
-import { userApi } from '@/lib/user.api';
 
 const DATA = {
     user: {
@@ -104,56 +102,83 @@ export function DashboardClient({ usersData: initialUsersData, recruitersData }:
     const activeItem = DATA.navMain.find(item => item.id === activeView);
 
     return (
-        <AppLayout>
-            <SidebarProvider>
-                <Sidebar collapsible="icon">
-                    <SidebarHeader>
-                        <div className="flex items-center gap-2 px-2 py-2">
-                            <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                                <span className="font-bold">JH</span>
-                            </div>
-                            <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
-                                <span className="truncate font-semibold">JobHub</span>
-                                <span className="truncate text-xs">Admin Dashboard</span>
-                            </div>
+        <SidebarProvider>
+            <Sidebar collapsible="icon">
+                <SidebarHeader>
+                    <div className="flex items-center gap-2 px-2 py-2">
+                        <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                            <span className="font-bold">JH</span>
                         </div>
-                    </SidebarHeader>
+                        <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
+                            <span className="truncate font-semibold">JobHub</span>
+                            <span className="truncate text-xs">Admin Dashboard</span>
+                        </div>
+                    </div>
+                </SidebarHeader>
 
-                    <SidebarContent>
-                        <SidebarGroup>
-                            <SidebarGroupLabel>Menu</SidebarGroupLabel>
-                            <SidebarMenu>
-                                {DATA.navMain.map((item) => (
-                                    <SidebarMenuItem key={item.title}>
-                                        <SidebarMenuButton
-                                            tooltip={item.title}
-                                            isActive={activeView === item.id}
-                                            onClick={() => setActiveView(item.id)}
-                                        >
-                                            {item.icon && <item.icon />}
-                                            <span>{item.title}</span>
-                                        </SidebarMenuButton>
-                                    </SidebarMenuItem>
-                                ))}
-                            </SidebarMenu>
-                        </SidebarGroup>
-                    </SidebarContent>
-
-                    <SidebarFooter>
+                <SidebarContent>
+                    <SidebarGroup>
+                        <SidebarGroupLabel>Menu</SidebarGroupLabel>
                         <SidebarMenu>
-                            <SidebarMenuItem>
-                                <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                        <SidebarMenuButton
-                                            size="lg"
-                                            className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-                                        >
+                            {DATA.navMain.map((item) => (
+                                <SidebarMenuItem key={item.title}>
+                                    <SidebarMenuButton
+                                        tooltip={item.title}
+                                        isActive={activeView === item.id}
+                                        onClick={() => setActiveView(item.id)}
+                                    >
+                                        {item.icon && <item.icon />}
+                                        <span>{item.title}</span>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
+                            ))}
+                        </SidebarMenu>
+                    </SidebarGroup>
+                </SidebarContent>
+
+                <SidebarFooter>
+                    <SidebarMenu>
+                        <SidebarMenuItem>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <SidebarMenuButton
+                                        size="lg"
+                                        className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                                    >
+                                        <Avatar className="h-8 w-8 rounded-lg">
+                                            <AvatarImage
+                                                src={DATA.user.avatar}
+                                                alt={DATA.user.name}
+                                            />
+                                            <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                                        </Avatar>
+                                        <div className="grid flex-1 text-left text-sm leading-tight">
+                                            <span className="truncate font-semibold">
+                                                {DATA.user.name}
+                                            </span>
+                                            <span className="truncate text-xs">
+                                                {DATA.user.email}
+                                            </span>
+                                        </div>
+                                        <ChevronsUpDown className="ml-auto size-4" />
+                                    </SidebarMenuButton>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent
+                                    className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+                                    side={isMobile ? 'bottom' : 'right'}
+                                    align="end"
+                                    sideOffset={4}
+                                >
+                                    <DropdownMenuLabel className="p-0 font-normal">
+                                        <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                                             <Avatar className="h-8 w-8 rounded-lg">
                                                 <AvatarImage
                                                     src={DATA.user.avatar}
                                                     alt={DATA.user.name}
                                                 />
-                                                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                                                <AvatarFallback className="rounded-lg">
+                                                    CN
+                                                </AvatarFallback>
                                             </Avatar>
                                             <div className="grid flex-1 text-left text-sm leading-tight">
                                                 <span className="truncate font-semibold">
@@ -163,106 +188,78 @@ export function DashboardClient({ usersData: initialUsersData, recruitersData }:
                                                     {DATA.user.email}
                                                 </span>
                                             </div>
-                                            <ChevronsUpDown className="ml-auto size-4" />
-                                        </SidebarMenuButton>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent
-                                        className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-                                        side={isMobile ? 'bottom' : 'right'}
-                                        align="end"
-                                        sideOffset={4}
-                                    >
-                                        <DropdownMenuLabel className="p-0 font-normal">
-                                            <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                                                <Avatar className="h-8 w-8 rounded-lg">
-                                                    <AvatarImage
-                                                        src={DATA.user.avatar}
-                                                        alt={DATA.user.name}
-                                                    />
-                                                    <AvatarFallback className="rounded-lg">
-                                                        CN
-                                                    </AvatarFallback>
-                                                </Avatar>
-                                                <div className="grid flex-1 text-left text-sm leading-tight">
-                                                    <span className="truncate font-semibold">
-                                                        {DATA.user.name}
-                                                    </span>
-                                                    <span className="truncate text-xs">
-                                                        {DATA.user.email}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </DropdownMenuLabel>
-                                        <DropdownMenuSeparator />
-                                        <DropdownMenuGroup>
-                                            <DropdownMenuItem>
-                                                <Sparkles />
-                                                Upgrade to Pro
-                                            </DropdownMenuItem>
-                                        </DropdownMenuGroup>
-                                        <DropdownMenuSeparator />
-                                        <DropdownMenuGroup>
-                                            <DropdownMenuItem>
-                                                <BadgeCheck />
-                                                Account
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem>
-                                                <CreditCard />
-                                                Billing
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem>
-                                                <Bell />
-                                                Notifications
-                                            </DropdownMenuItem>
-                                        </DropdownMenuGroup>
-                                        <DropdownMenuSeparator />
+                                        </div>
+                                    </DropdownMenuLabel>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuGroup>
                                         <DropdownMenuItem>
-                                            <LogOut />
-                                            Log out
+                                            <Sparkles />
+                                            Upgrade to Pro
                                         </DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
-                            </SidebarMenuItem>
-                        </SidebarMenu>
-                    </SidebarFooter>
-                    <SidebarRail />
-                </Sidebar>
+                                    </DropdownMenuGroup>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuGroup>
+                                        <DropdownMenuItem>
+                                            <BadgeCheck />
+                                            Account
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                            <CreditCard />
+                                            Billing
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                            <Bell />
+                                            Notifications
+                                        </DropdownMenuItem>
+                                    </DropdownMenuGroup>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem>
+                                        <LogOut />
+                                        Log out
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </SidebarMenuItem>
+                    </SidebarMenu>
+                </SidebarFooter>
+                <SidebarRail />
+            </Sidebar>
 
-                <SidebarInset>
-                    <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-                        <div className="flex items-center gap-2 px-4">
-                            <SidebarTrigger className="-ml-1" />
-                            <Separator orientation="vertical" className="mr-2 h-4" />
-                            <Breadcrumb>
-                                <BreadcrumbList>
-                                    <BreadcrumbItem className="hidden md:block">
-                                        <BreadcrumbLink href="#">
-                                            Dashboard
-                                        </BreadcrumbLink>
-                                    </BreadcrumbItem>
-                                    <BreadcrumbSeparator className="hidden md:block" />
-                                    <BreadcrumbItem>
-                                        <BreadcrumbPage>{activeItem?.title}</BreadcrumbPage>
-                                    </BreadcrumbItem>
-                                </BreadcrumbList>
-                            </Breadcrumb>
-                        </div>
-                    </header>
-                    <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-                        {activeView === 'users' && (
-                            <div className="flex flex-1 flex-col gap-4">
-                                <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                                    <div className="aspect-video rounded-xl bg-muted/50 flex items-center justify-center">
-                                        <span className="text-muted-foreground">Total Users</span>
-                                    </div>
-                                    <div className="aspect-video rounded-xl bg-muted/50 flex items-center justify-center">
-                                        <span className="text-muted-foreground">Active Users Stats</span>
-                                    </div>
-                                    <div className="aspect-video rounded-xl bg-muted/50 flex items-center justify-center">
-                                        <span className="text-muted-foreground">New Signups Stats</span>
-                                    </div>
+            <SidebarInset>
+                <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+                    <div className="flex items-center gap-2 px-4">
+                        <SidebarTrigger className="-ml-1" />
+                        <Separator orientation="vertical" className="mr-2 h-4" />
+                        <Breadcrumb>
+                            <BreadcrumbList>
+                                <BreadcrumbItem className="hidden md:block">
+                                    <BreadcrumbLink href="#">
+                                        Dashboard
+                                    </BreadcrumbLink>
+                                </BreadcrumbItem>
+                                <BreadcrumbSeparator className="hidden md:block" />
+                                <BreadcrumbItem>
+                                    <BreadcrumbPage>{activeItem?.title}</BreadcrumbPage>
+                                </BreadcrumbItem>
+                            </BreadcrumbList>
+                        </Breadcrumb>
+                    </div>
+                </header>
+                <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+                    {activeView === 'users' && (
+                        <div className="flex flex-1 flex-col gap-4">
+                            <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+                                <div className="aspect-video rounded-xl bg-muted/50 flex items-center justify-center">
+                                    <span className="text-muted-foreground">Total Users</span>
                                 </div>
-                                {/* <div className="min-h-[50vh] flex-1 rounded-xl bg-muted/50 p-4">
+                                <div className="aspect-video rounded-xl bg-muted/50 flex items-center justify-center">
+                                    <span className="text-muted-foreground">Active Users Stats</span>
+                                </div>
+                                <div className="aspect-video rounded-xl bg-muted/50 flex items-center justify-center">
+                                    <span className="text-muted-foreground">New Signups Stats</span>
+                                </div>
+                            </div>
+                            {/* <div className="min-h-[50vh] flex-1 rounded-xl bg-muted/50 p-4">
                                     <h2 className="text-lg font-semibold mb-4">Users Management</h2>
                                     {loading ? (
                                         <p className="text-muted-foreground">Loading users...</p>
@@ -276,49 +273,48 @@ export function DashboardClient({ usersData: initialUsersData, recruitersData }:
                                         <p className="text-muted-foreground">No data available</p>
                                     )}
                                 </div> */}
-                            </div>
-                        )}
+                        </div>
+                    )}
 
-                        {activeView === 'recruiters' && (
-                            <div className="flex flex-1 flex-col gap-4">
-                                <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                                    <div className="aspect-video rounded-xl bg-muted/50 flex items-center justify-center">
-                                        <span className="text-muted-foreground">Total Recruiters</span>
-                                    </div>
-                                    <div className="aspect-video rounded-xl bg-muted/50 flex items-center justify-center">
-                                        <span className="text-muted-foreground">Active Jobs</span>
-                                    </div>
-                                    <div className="aspect-video rounded-xl bg-muted/50 flex items-center justify-center">
-                                        <span className="text-muted-foreground">Pending Approvals</span>
-                                    </div>
+                    {activeView === 'recruiters' && (
+                        <div className="flex flex-1 flex-col gap-4">
+                            <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+                                <div className="aspect-video rounded-xl bg-muted/50 flex items-center justify-center">
+                                    <span className="text-muted-foreground">Total Recruiters</span>
                                 </div>
-                                <div className="min-h-[50vh] flex-1 rounded-xl bg-muted/50 p-4">
-                                    <h2 className="text-lg font-semibold mb-4">Recruiters Management</h2>
-                                    <p className="text-muted-foreground">Recruiter list and approval workflow will go here.</p>
+                                <div className="aspect-video rounded-xl bg-muted/50 flex items-center justify-center">
+                                    <span className="text-muted-foreground">Active Jobs</span>
+                                </div>
+                                <div className="aspect-video rounded-xl bg-muted/50 flex items-center justify-center">
+                                    <span className="text-muted-foreground">Pending Approvals</span>
                                 </div>
                             </div>
-                        )}
+                            <div className="min-h-[50vh] flex-1 rounded-xl bg-muted/50 p-4">
+                                <h2 className="text-lg font-semibold mb-4">Recruiters Management</h2>
+                                <p className="text-muted-foreground">Recruiter list and approval workflow will go here.</p>
+                            </div>
+                        </div>
+                    )}
 
-                        {activeView === 'profile' && (
-                            <div className="flex flex-1 flex-col gap-4">
-                                <div className="min-h-[50vh] flex-1 rounded-xl bg-muted/50 p-4">
-                                    <h2 className="text-lg font-semibold mb-4">My Profile</h2>
-                                    <p className="text-muted-foreground">Profile settings and information will go here.</p>
-                                </div>
+                    {activeView === 'profile' && (
+                        <div className="flex flex-1 flex-col gap-4">
+                            <div className="min-h-[50vh] flex-1 rounded-xl bg-muted/50 p-4">
+                                <h2 className="text-lg font-semibold mb-4">My Profile</h2>
+                                <p className="text-muted-foreground">Profile settings and information will go here.</p>
                             </div>
-                        )}
+                        </div>
+                    )}
 
-                        {activeView === 'settings' && (
-                            <div className="flex flex-1 flex-col gap-4">
-                                <div className="min-h-[50vh] flex-1 rounded-xl bg-muted/50 p-4">
-                                    <h2 className="text-lg font-semibold mb-4">Settings</h2>
-                                    <p className="text-muted-foreground">Application settings and configuration will go here.</p>
-                                </div>
+                    {activeView === 'settings' && (
+                        <div className="flex flex-1 flex-col gap-4">
+                            <div className="min-h-[50vh] flex-1 rounded-xl bg-muted/50 p-4">
+                                <h2 className="text-lg font-semibold mb-4">Settings</h2>
+                                <p className="text-muted-foreground">Application settings and configuration will go here.</p>
                             </div>
-                        )}
-                    </div>
-                </SidebarInset>
-            </SidebarProvider>
-        </AppLayout>
+                        </div>
+                    )}
+                </div>
+            </SidebarInset>
+        </SidebarProvider>
     );
 }
