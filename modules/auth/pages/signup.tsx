@@ -31,7 +31,7 @@ const SignupPage: React.FC<UseSignupProps> = (props) => {
         handleSubmit,
         handleSocialSignup,
         errors,
-    } = useSignup(props);
+    } = useSignup({ ...props, role });
 
     const { handleGoogleLogin } = useGoogleAuth({
         role: role as UserRole,
@@ -85,6 +85,24 @@ const SignupPage: React.FC<UseSignupProps> = (props) => {
                             )
                         }
 
+                        {/* Name field for recruiters */}
+                        {role === USER_ROLES.RECRUITER && (
+                            <div>
+                                <FormInput
+                                    id="name"
+                                    name="name"
+                                    label="Full Name"
+                                    type="text"
+                                    placeholder="John Doe"
+                                    value={form.name}
+                                    onChange={handleChange}
+                                    icon={<Icons.userPlus className="w-5 h-5" />}
+                                />
+                                {errors.name && (
+                                    <p className="text-red-600 dark:text-red-400 text-sm mt-1">{errors.name}</p>
+                                )}
+                            </div>
+                        )}
 
 
                         <div>
@@ -156,11 +174,13 @@ const SignupPage: React.FC<UseSignupProps> = (props) => {
 
 
 
-                    <RedirectLink
-                        link={role === USER_ROLES.USER ? "/users/auth/login" : "/recruiter/auth/login"}
-                        label="Already have an account?"
-                        context="Sign In"
-                    />
+                    {role !== USER_ROLES.ADMIN && (
+                        <RedirectLink
+                            link={role === USER_ROLES.USER ? "/users/auth/login" : "/recruiter/auth/login"}
+                            label="Already have an account?"
+                            context="Sign In"
+                        />
+                    )}
                 </CardContent>
             </Card>
         </div>
