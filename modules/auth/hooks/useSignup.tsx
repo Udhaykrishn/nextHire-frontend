@@ -13,6 +13,7 @@ export interface SignupPayload {
     phone: string;
     password: string;
     confirmPassword: string;
+    company_name?: string;
     role?: string;
 }
 
@@ -29,7 +30,16 @@ export const useSignup = ({
 }: UseSignupProps) => {
     const router = useRouter();
 
-    const [form, setForm] = useState<{ name: string; email: string; phone: string; password: string; confirmPassword: string }>({
+    console.log("signup role is: ",role)
+
+    const [form, setForm] = useState<{
+        name: string;
+        email: string;
+        phone: string;
+        password: string;
+        confirmPassword: string;
+        company_name?: string;
+    }>({
         name: "",
         email: "",
         phone: "",
@@ -43,6 +53,7 @@ export const useSignup = ({
         name?: string;
         email?: string;
         phone?: string;
+        company_name?: string;
         password?: string;
         confirmPassword?: string;
         root?: string;
@@ -65,7 +76,7 @@ export const useSignup = ({
         setIsLoading(true);
         try {
             const payload: SignupPayload = result.data;
-            const { role: _, ...userData } = payload;
+            const { role: _, confirmPassword, ...userData } = payload;
             const authService = getAuthService(role as UserRole);
             await authService.signup(userData);
             onSignup?.(payload);
