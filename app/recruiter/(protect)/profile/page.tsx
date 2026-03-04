@@ -1,20 +1,18 @@
-import { recruiterApi } from "@/lib/recruiter.api";
-import { RecruiterProfileContent } from "./recruiter-profile-content";
+import { Suspense } from "react";
+import { RecruiterProfileClient } from "@/modules/recruiter/components/profile/recruiter-profile-client";
 
-export default async function Page() {
-    let recruiter;
-    try {
-        const { data } = await recruiterApi.get("/recruiter/profile");
-        recruiter = data.data;
-    } catch (error: any) {
-        console.error("Failed to fetch recruiter profile:", error);
-    }
-
-    if (!recruiter) {
-        return <div className="p-6 text-center text-muted-foreground">Failed to load profile. Please try again later.</div>
-    }
-
-    return (
-        <RecruiterProfileContent recruiter={recruiter} />
-    );
+export default function Page() {
+  return (
+    <Suspense
+      fallback={
+        <div className="p-12 space-y-8 animate-pulse text-center">
+          <div className="w-24 h-24 bg-muted rounded-full mx-auto" />
+          <div className="h-6 w-48 bg-muted rounded mx-auto" />
+          <div className="h-4 w-32 bg-muted rounded mx-auto" />
+        </div>
+      }
+    >
+      <RecruiterProfileClient />
+    </Suspense>
+  );
 }

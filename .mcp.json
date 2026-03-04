@@ -4,7 +4,7 @@
       "command": "bunx",
       "args": ["next-devtools-mcp@latest"]
     },
-     "shadcn-ui": {
+    "shadcn-ui": {
       "command": "bunx",
       "args": ["shadcn-ui-mcp-server@latest"]
     }

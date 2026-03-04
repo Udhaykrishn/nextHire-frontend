@@ -1,3 +1,6 @@
-export { RecruitersTable } from "./recruiters-table";
-export { RecruiterSearch, RecruiterPagination } from "./recruiter-search-pagination";
 export { RecruiterDetailsModal } from "./recruiter-details-modal";
+export {
+  RecruiterPagination,
+  RecruiterSearch,
+} from "./recruiter-search-pagination";
+export { RecruitersTable } from "./recruiters-table";

@@ -22,7 +22,7 @@ export async function GET(request: Request) {
 
   const blockData = await blockResponse.json();
 
-  if (blockData.error.statusCode === 403) {
+  if (blockData?.error?.statusCode === 403) {
     return NextResponse.json({ blocked: true });
   }
 

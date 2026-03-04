@@ -1,15 +1,21 @@
-import { DashboardClient } from './dashboard-client';
-import { recruiterApi } from '@/lib/recruiter.api';
+import { Suspense } from "react";
+import { DashboardClient } from "./dashboard-client";
 
-export default async function Page() {
-    try {
-        const { data } = await recruiterApi.get("/recruiter/profile");
-        return <DashboardClient usersData={data.data} />;
-    } catch (error: any) {
-        if (error?.digest?.startsWith('NEXT_REDIRECT')) {
-            throw error;
-        }
-        console.error("Dashboard page fetch error:", error);
-        return <DashboardClient />;
-    }
+export default function Page() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex flex-1 flex-col gap-4 animate-pulse">
+          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="aspect-video rounded-xl bg-muted/50" />
+            ))}
+          </div>
+          <div className="min-h-[50vh] flex-1 rounded-xl bg-muted/50" />
+        </div>
+      }
+    >
+      <DashboardClient />
+    </Suspense>
+  );
 }

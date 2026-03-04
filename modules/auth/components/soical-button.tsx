@@ -6,7 +6,6 @@ interface SocialButtonProps {
   onClick: () => void;
 }
 
-
 export const SocialButton: React.FC<SocialButtonProps> = ({
   provider,
   icon,

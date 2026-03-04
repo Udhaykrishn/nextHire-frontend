@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 
 export async function http(
   url: string,
-  options: RequestInit & { role: "user" | "admin" | "recruiter" }
+  options: RequestInit & { role: "user" | "admin" | "recruiter" },
 ) {
   const { role, ...fetchOptions } = options;
 
@@ -38,8 +38,10 @@ export async function http(
   if (!response.ok) {
     try {
       const errorData = await response.json();
-      throw new Error(errorData.message || `Request failed: ${response.status}`);
-    } catch (e) {
+      throw new Error(
+        errorData.message || `Request failed: ${response.status}`,
+      );
+    } catch (_e) {
       throw new Error(`Request failed: ${response.status}`);
     }
   }
@@ -64,18 +66,15 @@ async function tryRefreshToken(role: "user" | "admin" | "recruiter") {
     {
       method: "POST",
       credentials: "include",
-    }
+    },
   );
 
   return refresh.ok;
 }
 
 async function logoutFromBackend(role: "user" | "admin" | "recruiter") {
-  await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/auth/${role}/logout`,
-    {
-      method: "POST",
-      credentials: "include",
-    }
-  );
+  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/${role}/logout`, {
+    method: "POST",
+    credentials: "include",
+  });
 }

@@ -1,4 +1,3 @@
-import { Icons } from "./icons";
 import Link from "next/link";
 
 interface RedirectLinkProps {
@@ -7,18 +6,19 @@ interface RedirectLinkProps {
   link: string;
 }
 
-
-export const RedirectLink: React.FC<RedirectLinkProps> = ({ link, context, label }) => {
+export const RedirectLink: React.FC<RedirectLinkProps> = ({
+  link,
+  context,
+  label,
+}) => {
   return (
-    <div className="text-center text-sm text-gray-600">
-      {label}{' '}
+    <div className="text-center text-[10px] font-black uppercase tracking-widest text-muted-foreground pt-4">
+      {label}{" "}
       <Link
         href={link}
-        type="button"
-        className="text-cyan-400 hover:text-cyan-500 font-semibold p-0 h-auto inline-flex items-center gap-1"
+        className="text-cyan-500 hover:text-cyan-600 font-black italic ml-1 transition-all"
       >
-        {context}
-        <Icons.userPlus className="w-4 h-4" />
+        {context} Access
       </Link>
     </div>
   );

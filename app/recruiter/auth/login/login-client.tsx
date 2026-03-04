@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import LoginPage from "@/modules/auth/pages/login";
 import { USER_ROLES } from "@/constants";
+import LoginPage from "@/modules/auth/pages/login";
 
 export default function RecruiterLoginPage() {
-    return <LoginPage role={USER_ROLES.RECRUITER} />;
+  return <LoginPage role={USER_ROLES.RECRUITER} />;
 }

@@ -7,7 +7,7 @@ export const userDAL = {
       role: "user",
     }),
 
-  updateProfile: (data:any) =>
+  updateProfile: (data: unknown) =>
     http("/user/profile", {
       method: "PUT",
       role: "user",

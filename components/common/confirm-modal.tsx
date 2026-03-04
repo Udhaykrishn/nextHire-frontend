@@ -1,66 +1,62 @@
 "use client";
 
 import {
-    Dialog,
-    DialogPopup,
-    DialogHeader,
-    DialogTitle,
-    DialogDescription,
-    DialogFooter,
-    DialogClose,
+  Dialog,
+  DialogClose,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogPopup,
+  DialogTitle,
 } from "@/components/animate-ui/components/base/dialog";
 import { Button } from "@/components/animate-ui/components/buttons/button";
 
 interface ConfirmModalProps {
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-    title: string;
-    description?: string;
-    confirmText?: string;
-    onConfirm: () => void;
-    from?: any;
-    showCloseButton?: boolean;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  title: string;
+  description?: string;
+  confirmText?: string;
+  onConfirm: () => void;
+  from?: any;
+  showCloseButton?: boolean;
 }
 
 export const ConfirmModal = ({
-    open,
-    onOpenChange,
-    title,
-    description,
-    confirmText = "Confirm",
-    onConfirm,
-    from,
-    showCloseButton = true,
+  open,
+  onOpenChange,
+  title,
+  description,
+  confirmText = "Confirm",
+  onConfirm,
+  from,
+  showCloseButton = true,
 }: ConfirmModalProps) => {
-    return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogPopup
-                from={from}
-                showCloseButton={showCloseButton}
-                className="sm:max-w-[400px]"
-            >
-                <DialogHeader>
-                    <DialogTitle>{title}</DialogTitle>
-                    {description && (
-                        <DialogDescription>{description}</DialogDescription>
-                    )}
-                </DialogHeader>
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogPopup
+        from={from}
+        showCloseButton={showCloseButton}
+        className="sm:max-w-[400px]"
+      >
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+          {description && <DialogDescription>{description}</DialogDescription>}
+        </DialogHeader>
 
-                <DialogFooter>
-                    <DialogClose
-                        render={<Button variant="outline">Cancel</Button>}
-                    />
-                    <Button
-                        variant="default"
-                        onClick={() => {
-                            onConfirm();
-                            onOpenChange(false); // close after confirm
-                        }}
-                    >
-                        {confirmText}
-                    </Button>
-                </DialogFooter>
-            </DialogPopup>
-        </Dialog>
-    );
+        <DialogFooter>
+          <DialogClose render={<Button variant="outline">Cancel</Button>} />
+          <Button
+            variant="default"
+            onClick={() => {
+              onConfirm();
+              onOpenChange(false); // close after confirm
+            }}
+          >
+            {confirmText}
+          </Button>
+        </DialogFooter>
+      </DialogPopup>
+    </Dialog>
+  );
 };

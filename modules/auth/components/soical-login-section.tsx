@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
+import { CredentialResponse } from "@react-oauth/google";
+import { GoogleLoginButton } from "./google-login-button";
 import { Icons } from "./icons";
 import { SocialButton } from "./soical-button";
-import { GoogleLoginButton } from "./google-login-button";
-import { CredentialResponse } from '@react-oauth/google';
 
 interface SocialLoginSectionProps {
   onGoogleLogin: (credentialResponse: CredentialResponse) => void;
@@ -15,18 +15,16 @@ export const SocialLoginSection: React.FC<SocialLoginSectionProps> = ({
   onGithubLogin,
 }) => {
   return (
-    <>
-      <div className="space-y-3">
-        <GoogleLoginButton
-          onSuccess={onGoogleLogin}
-          onError={() => console.error('Google login failed')}
-        />
-        <SocialButton
-          provider="GitHub"
-          icon={<Icons.github className="w-5 h-5" />}
-          onClick={onGithubLogin}
-        />
-      </div>
-    </>
+    <div className="space-y-3">
+      <GoogleLoginButton
+        onSuccess={onGoogleLogin}
+        onError={() => console.error("Google login failed")}
+      />
+      <SocialButton
+        provider="GitHub"
+        icon={<Icons.github className="w-5 h-5" />}
+        onClick={onGithubLogin}
+      />
+    </div>
   );
 };
