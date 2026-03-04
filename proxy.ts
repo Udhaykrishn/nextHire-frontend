@@ -22,15 +22,26 @@ export async function proxy(request: NextRequest) {
     }
   }
 
+  const isAuthPage = pathname.includes("/auth/");
+
+  const getDashboardUrl = (prefix: string | null) => {
+    return new URL(`${prefix ? prefix : ""}/dashboard`, request.url);
+  };
+
   const getLoginUrl = (prefix: string | null) => {
     return new URL(`${prefix ? prefix : ""}/auth/login`, request.url);
   };
 
   if (!accessToken && !sessionId) {
+    if (isAuthPage) return NextResponse.next();
     return NextResponse.redirect(getLoginUrl(inferredPrefix));
   }
 
   if (accessToken) {
+    if (isAuthPage) {
+      return NextResponse.redirect(getDashboardUrl(inferredPrefix));
+    }
+
     if (inferredPrefix) {
       const role = prefixMap[inferredPrefix];
       try {
@@ -83,6 +94,9 @@ export async function proxy(request: NextRequest) {
         const data = await refreshResponse.json();
 
         if (data.success) {
+          if (isAuthPage) {
+            return NextResponse.redirect(getDashboardUrl(inferredPrefix));
+          }
           const response = NextResponse.redirect(request.nextUrl);
 
           refreshResponse.headers.forEach((value, key) => {
@@ -95,6 +109,8 @@ export async function proxy(request: NextRequest) {
         }
       }
 
+      if (isAuthPage) return NextResponse.next();
+
       const response = NextResponse.redirect(getLoginUrl(inferredPrefix));
 
       response.cookies.set("session_id", "", {
@@ -104,6 +120,8 @@ export async function proxy(request: NextRequest) {
 
       return response;
     } catch (_err) {
+      if (isAuthPage) return NextResponse.next();
+
       const response = NextResponse.redirect(getLoginUrl(inferredPrefix));
 
       response.cookies.set("session_id", "", {
@@ -115,13 +133,11 @@ export async function proxy(request: NextRequest) {
     }
   }
 
+  if (isAuthPage) return NextResponse.next();
+
   return NextResponse.redirect(getLoginUrl(inferredPrefix));
 }
 
 export const config = {
-  matcher: [
-    "/users/((?!auth/).*)",
-    "/admin/((?!auth/).*)",
-    "/recruiter/((?!auth/).*)",
-  ],
+  matcher: ["/users/:path*", "/admin/:path*", "/recruiter/:path*"],
 };
