@@ -123,12 +123,11 @@ export const PasswordStrengthInput: React.FC<PasswordStrengthInputProps> = ({
         <div className="space-y-3 px-1 animate-in fade-in slide-in-from-top-1 duration-300">
           {/* Strength Bars */}
           <div className="flex gap-1.5 w-full">
-            {[0, 1, 2, 3, 4].map((index) => (
+            {[0, 1, 2, 3, 4].map((barIndex) => (
               <div
-                // biome-ignore lint/suspicious/noArrayIndexKey: Strength bars are static
-                key={index}
+                key={barIndex}
                 className={`h-1.5 rounded-full w-full transition-all duration-500 ${getStrengthColor(
-                  index,
+                  barIndex,
                 )}`}
               />
             ))}
@@ -151,10 +150,9 @@ export const PasswordStrengthInput: React.FC<PasswordStrengthInputProps> = ({
             className="grid grid-cols-1 sm:grid-cols-2 gap-2"
             aria-label="Password requirements"
           >
-            {calculateStrength.requirements.map((req, index) => (
+            {calculateStrength.requirements.map((req) => (
               <li
-                // biome-ignore lint/suspicious/noArrayIndexKey: Requirements are static
-                key={index}
+                key={req.text}
                 className="flex items-center gap-2 bg-muted/30 p-2 rounded-lg border border-border/40"
               >
                 {req.met ? (
