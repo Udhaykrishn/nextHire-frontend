@@ -71,7 +71,7 @@ export const UserAuthService = {
     try {
       await userApi.post(API_ROUTES.AUTH.USER.VERIFY_RESET_TOKEN, { token });
       return true;
-    } catch (error) {
+    } catch (_error) {
       return false;
     }
   },
@@ -85,6 +85,24 @@ export const UserAuthService = {
 
   updateProfile: async (data: Partial<User>) => {
     const response = await userApi.patch<{ data: User }>("/user/update", data);
+    return response.data;
+  },
+  uploadResume: async (file: File) => {
+    const formData = new FormData();
+    formData.append("resume", file);
+    const response = await userApi.post<User>(
+      "/user/profile/resume/upload",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
+    return response.data;
+  },
+  deleteResume: async () => {
+    const response = await userApi.delete<User>("/user/profile/resume/upload");
     return response.data;
   },
 };
