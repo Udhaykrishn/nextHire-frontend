@@ -1,15 +1,8 @@
 "use client";
 
-import { MoreHorizontal } from "lucide-react";
 import { ReactNode } from "react";
 import { Button } from "@/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/ui/dropdown-menu";
+
 import {
   Table,
   TableBody,
@@ -20,12 +13,14 @@ import {
 } from "@/ui/table";
 
 export interface Column<T> {
+  id?: string;
   header: string;
   accessor: keyof T | ((row: T) => ReactNode);
   className?: string;
 }
 
 export interface Action<T> {
+  id?: string;
   label: string | ((row: T) => string);
   icon?: ReactNode | ((row: T) => ReactNode);
   onClick: (row: T) => void;
@@ -62,8 +57,11 @@ export function DataTable<T>({
       <Table>
         <TableHeader>
           <TableRow>
-            {columns.map((column, index) => (
-              <TableHead key={index} className={column.className}>
+            {columns.map((column) => (
+              <TableHead
+                key={column.id || column.header}
+                className={column.className}
+              >
                 {column.header}
               </TableHead>
             ))}
@@ -89,8 +87,11 @@ export function DataTable<T>({
 
               return (
                 <TableRow key={rowKey}>
-                  {columns.map((column, colIndex) => (
-                    <TableCell key={colIndex} className={column.className}>
+                  {columns.map((column) => (
+                    <TableCell
+                      key={column.id || column.header}
+                      className={column.className}
+                    >
                       {renderCell(row, column)}
                     </TableCell>
                   ))}
@@ -99,7 +100,7 @@ export function DataTable<T>({
                       <div className="flex items-center justify-end gap-2">
                         {actions
                           .filter((action) => !action.show || action.show(row))
-                          .map((action, actionIndex) => {
+                          .map((action) => {
                             const label =
                               typeof action.label === "function"
                                 ? action.label(row)
@@ -115,7 +116,12 @@ export function DataTable<T>({
 
                             return (
                               <Button
-                                key={actionIndex}
+                                key={
+                                  action.id ||
+                                  (typeof action.label === "string"
+                                    ? action.label
+                                    : label)
+                                }
                                 variant="ghost"
                                 size="sm"
                                 className={`h-8 w-8 p-0 ${className || ""}`}
