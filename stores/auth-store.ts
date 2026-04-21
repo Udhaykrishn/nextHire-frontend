@@ -8,7 +8,20 @@ export interface User {
   name: string;
   email: string;
   role: UserRole;
-  avatar?: string;
+  phone?: string;
+  experience?: string;
+  role_of_title?: string;
+  resume_url?: { key: string; url: string };
+  profile_url?: { key: string; url: string };
+  bio?: string;
+  badge?: boolean;
+  skills?: string[];
+  languages?: { name: string; proficiency: string }[];
+  social_link?: {
+    linkedin: string;
+    portfolio: string;
+    github: string;
+  };
 }
 
 interface AuthState {
