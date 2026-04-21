@@ -2,7 +2,7 @@ import { NextRequest } from "next/server";
 
 export function authChecker(req: NextRequest) {
   const accessToken = req.cookies.get("accessToken")?.value;
-  const sessionId = req.cookies.get("session_id")?.value;
+  const _sessionId = req.cookies.get("session_id")?.value;
 
   if (!accessToken) return null;
 
