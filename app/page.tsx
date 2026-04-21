@@ -1,11 +1,11 @@
 export const revalidate = 3600;
 
 import Link from "next/link";
-import { Companies } from "@/modules/landing/components/companies";
-import { Features } from "@/modules/landing/components/features";
-import { Footer } from "@/modules/landing/components/footer";
-import { Hero } from "@/modules/landing/components/hero";
-import { Navbar } from "@/modules/landing/components/navbar";
+import { Navbar } from "../components/navbar";
+import { Companies } from "../modules/landing/components/companies";
+import { Features } from "../modules/landing/components/features";
+import { Footer } from "../modules/landing/components/footer";
+import { Hero } from "../modules/landing/components/hero";
 
 export const metadata = {
   title: "NextHire | Intelligence-Driven Recruitment for Top Talent",
