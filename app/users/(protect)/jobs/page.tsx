@@ -12,7 +12,10 @@ export default function JobsPage() {
           </p>
         </div>
         <div className="flex gap-2">
-          <button className="inline-flex items-center justify-center rounded-lg border bg-background px-4 py-2 text-sm font-medium hover:bg-muted">
+          <button
+            type="button"
+            className="inline-flex items-center justify-center rounded-lg border bg-background px-4 py-2 text-sm font-medium hover:bg-muted"
+          >
             <svg
               className="mr-2 h-4 w-4"
               fill="none"
@@ -79,7 +82,10 @@ export default function JobsPage() {
             className="w-48 rounded-lg border bg-background px-10 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <button className="rounded-lg bg-blue-600 px-6 py-3 text-sm font-medium text-white hover:bg-blue-700">
+        <button
+          type="button"
+          className="rounded-lg bg-blue-600 px-6 py-3 text-sm font-medium text-white hover:bg-blue-700"
+        >
           Search
         </button>
       </div>
@@ -154,7 +160,10 @@ export default function JobsPage() {
               <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full dark:bg-green-900/30 dark:text-green-400">
                 New
               </span>
-              <button className="text-muted-foreground hover:text-foreground">
+              <button
+                type="button"
+                className="text-muted-foreground hover:text-foreground"
+              >
                 <svg
                   className="h-5 w-5"
                   fill="none"
@@ -253,7 +262,10 @@ export default function JobsPage() {
               <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full dark:bg-blue-900/30 dark:text-blue-400">
                 Featured
               </span>
-              <button className="text-muted-foreground hover:text-foreground">
+              <button
+                type="button"
+                className="text-muted-foreground hover:text-foreground"
+              >
                 <svg
                   className="h-5 w-5"
                   fill="none"
@@ -350,7 +362,10 @@ export default function JobsPage() {
             </div>
             <div className="flex flex-col items-end gap-2">
               <span className="text-xs text-muted-foreground">2 days ago</span>
-              <button className="text-muted-foreground hover:text-foreground">
+              <button
+                type="button"
+                className="text-muted-foreground hover:text-foreground"
+              >
                 <svg
                   className="h-5 w-5"
                   fill="none"
