@@ -10,6 +10,7 @@ import {
   DialogTitle,
 } from "@/components/animate-ui/components/base/dialog";
 import { Button } from "@/components/animate-ui/components/buttons/button";
+import { type DialogFlipDirection } from "@/components/animate-ui/primitives/base/dialog";
 
 interface ConfirmModalProps {
   open: boolean;
@@ -18,7 +19,7 @@ interface ConfirmModalProps {
   description?: string;
   confirmText?: string;
   onConfirm: () => void;
-  from?: any;
+  from?: DialogFlipDirection;
   showCloseButton?: boolean;
 }
 
