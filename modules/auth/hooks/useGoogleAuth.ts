@@ -48,7 +48,7 @@ export function useGoogleAuth({
         error.response?.data?.error?.message || "Google authentication failed";
       console.error("Failed to authenticate with Google:", err);
       toast.error(errorMessage);
-      // onError?.(err);
+      onError?.(err);
 
       throw err;
     } finally {
