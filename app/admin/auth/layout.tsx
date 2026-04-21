@@ -54,9 +54,5 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
     );
   }
 
-  return (
-    <>
-      <main>{children}</main>
-    </>
-  );
+  return <main>{children}</main>;
 }
