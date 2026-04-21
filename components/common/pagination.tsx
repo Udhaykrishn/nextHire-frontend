@@ -20,8 +20,6 @@ export function DataPagination({
   currentPage,
   totalPages,
   onPageChange,
-  itemsPerPage,
-  totalItems,
 }: PaginationProps) {
   return (
     <div className="flex items-center justify-center">
