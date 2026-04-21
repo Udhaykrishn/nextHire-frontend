@@ -16,8 +16,9 @@ import { useState } from "react";
 import { Button } from "@/components/animate-ui/components/buttons/button";
 import { AnimatedThemeToggle } from "@/components/animated-theme-toggle";
 import { userApi } from "@/lib/user.api";
+import { type User as UserType } from "@/types/user";
 
-export function Navbar({ user }: { user: any }) {
+export function Navbar({ user }: { user?: UserType }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const pathname = usePathname();
@@ -96,6 +97,7 @@ export function Navbar({ user }: { user: any }) {
             ) : (
               <div className="relative hidden md:block">
                 <button
+                  type="button"
                   onClick={() => setProfileMenuOpen(!profileMenuOpen)}
                   className="flex items-center space-x-2 rounded-full border px-4 py-2"
                 >
@@ -133,6 +135,7 @@ export function Navbar({ user }: { user: any }) {
                     </Link>
 
                     <button
+                      type="button"
                       onClick={handleLogout}
                       className="flex w-full items-center gap-2 px-4 py-2.5 text-red-600"
                     >
@@ -145,6 +148,7 @@ export function Navbar({ user }: { user: any }) {
             )}
 
             <button
+              type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="md:hidden rounded-lg p-2"
             >
@@ -198,6 +202,7 @@ export function Navbar({ user }: { user: any }) {
                 </Link>
 
                 <button
+                  type="button"
                   onClick={handleLogout}
                   className="flex w-full items-center gap-3 px-3 py-2 text-red-600 text-sm font-semibold"
                 >
