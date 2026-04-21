@@ -21,7 +21,7 @@ const OtpVerifyPage: React.FC<OtpVerifyPageProps> = ({ role: propRole }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const email = searchParams?.get("email") ?? "";
-  const role = propRole ?? (searchParams?.get("role") as any) ?? "user";
+  const role = propRole ?? (searchParams?.get("role") as string) ?? "user";
 
   const { otp, handleChange, errors, isLoading, handleSubmit, handleResend } =
     useOtpVerify({ email, role });
@@ -101,6 +101,7 @@ const OtpVerifyPage: React.FC<OtpVerifyPageProps> = ({ role: propRole }) => {
               Didn't receive the code?{" "}
               {canResend ? (
                 <button
+                  type="button"
                   onClick={onResend}
                   disabled={isLoading}
                   className="text-primary font-medium hover:underline disabled:opacity-50"
