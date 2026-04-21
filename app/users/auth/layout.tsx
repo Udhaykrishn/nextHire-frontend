@@ -1,4 +1,4 @@
-import { Navbar } from "@/modules/landing/components/navbar";
+import { Navbar } from "../../../components/navbar";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
