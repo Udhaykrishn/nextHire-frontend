@@ -6,7 +6,6 @@ import LoginPage from "@/modules/auth/pages/login";
 export function LoginContent() {
   return (
     <LoginPage
-      role={"admin"}
       onLogin={() => {}}
       onSocialLogin={(provider) => console.log("Social login:", provider)}
     />
