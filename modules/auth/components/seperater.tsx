@@ -1,5 +1,3 @@
-import { Separator } from "@radix-ui/react-separator";
-
 const AuthSeperater = () => {
   return (
     <div className="relative py-4">
