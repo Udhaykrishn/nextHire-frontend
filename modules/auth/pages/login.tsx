@@ -127,9 +127,9 @@ const LoginPage: React.FC<UseLoginProps> = (props) => {
 
             <SubmitButton
               onClick={handleSubmit}
-              label={isLoading ? "Signing in..." : "Sign In"}
-              disabled={isLoading}
-              icon={!isLoading ? Icons.login : undefined}
+              label={isLoading || isGoogleLoading ? "Signing in..." : "Sign In"}
+              disabled={isLoading || isGoogleLoading}
+              icon={!isLoading && !isGoogleLoading ? Icons.login : undefined}
               className="py-6 rounded-xl font-black uppercase tracking-widest shadow-lg shadow-cyan-200/20"
             />
           </div>
