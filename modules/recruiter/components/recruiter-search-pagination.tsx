@@ -1,7 +1,11 @@
 "use client";
 
 import { Search } from "lucide-react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
+  usePathname,
+  useRouter,
+  useSearchParams as useSP,
+} from "next/navigation";
 import { useRef } from "react";
 import { Button } from "@/ui/button";
 import { Input } from "@/ui/input";
@@ -10,10 +14,12 @@ interface RecruiterSearchProps {
   defaultValue?: string;
 }
 
-export function RecruiterSearch({ defaultValue }: RecruiterSearchProps) {
+import { Suspense } from "react";
+
+function RecruiterSearchContent({ defaultValue }: RecruiterSearchProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const searchParams = useSP();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleSearch = (term: string) => {
@@ -44,18 +50,26 @@ export function RecruiterSearch({ defaultValue }: RecruiterSearchProps) {
   );
 }
 
+export function RecruiterSearch(props: RecruiterSearchProps) {
+  return (
+    <Suspense>
+      <RecruiterSearchContent {...props} />
+    </Suspense>
+  );
+}
+
 interface RecruiterPaginationProps {
   currentPage: number;
   totalPages: number;
 }
 
-export function RecruiterPagination({
+function RecruiterPaginationContent({
   currentPage,
   totalPages,
 }: RecruiterPaginationProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const searchParams = useSP();
 
   const handlePageChange = (newPage: number) => {
     const params = new URLSearchParams(searchParams?.toString() ?? "");
@@ -85,5 +99,13 @@ export function RecruiterPagination({
         Next
       </Button>
     </div>
+  );
+}
+
+export function RecruiterPagination(props: RecruiterPaginationProps) {
+  return (
+    <Suspense>
+      <RecruiterPaginationContent {...props} />
+    </Suspense>
   );
 }

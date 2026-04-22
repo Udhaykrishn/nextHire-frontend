@@ -1,10 +1,10 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import React, { useState } from "react";
+import { useSearchParams as useSP } from "next/navigation";
+import React, { Suspense, useState } from "react";
 
-export default function ResetPasswordClient() {
-  const searchParams = useSearchParams();
+function ResetPasswordContent() {
+  const searchParams = useSP();
   const token = searchParams?.get("token");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -69,5 +69,13 @@ export default function ResetPasswordClient() {
         </button>
       </form>
     </div>
+  );
+}
+
+export default function ResetPasswordClient() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ResetPasswordContent />
+    </Suspense>
   );
 }

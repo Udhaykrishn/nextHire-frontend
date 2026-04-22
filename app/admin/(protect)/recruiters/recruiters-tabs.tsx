@@ -1,6 +1,11 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
+  usePathname,
+  useRouter,
+  useSearchParams as useSP,
+} from "next/navigation";
+import { Suspense } from "react";
 import { RecruiterSearch } from "@/modules/recruiter/components/recruiter-search-pagination";
 import { RecruitersTable } from "@/modules/recruiter/components/recruiters-table";
 import { type Recruiter } from "@/services/admin/recruiter-management.service";
@@ -20,7 +25,7 @@ interface RecruitersTabsProps {
   search: string;
 }
 
-export function RecruitersTabs({
+function RecruitersTabsContent({
   recruitersData,
   currentStatus,
   currentPage,
@@ -29,12 +34,12 @@ export function RecruitersTabs({
 }: RecruitersTabsProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const searchParams = useSP();
 
   const handleTabChange = (value: string) => {
     const params = new URLSearchParams(searchParams?.toString() ?? "");
     params.set("status", value);
-    params.set("page", "1"); // Reset to page 1 when changing tabs
+    params.set("page", "1");
     router.push(`${pathname}?${params.toString()}`);
   };
 
@@ -85,5 +90,13 @@ export function RecruitersTabs({
         )}
       </TabsContent>
     </Tabs>
+  );
+}
+
+export function RecruitersTabs(props: RecruitersTabsProps) {
+  return (
+    <Suspense>
+      <RecruitersTabsContent {...props} />
+    </Suspense>
   );
 }

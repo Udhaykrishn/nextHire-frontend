@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useSearchParams as useSP } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 import { Card, CardContent } from "@/ui/card";
 import {
   InputOTP,
@@ -17,9 +17,8 @@ interface OtpVerifyPageProps {
   role?: string;
 }
 
-const OtpVerifyPage: React.FC<OtpVerifyPageProps> = ({ role: propRole }) => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+function OtpVerifyContent({ role: propRole }: OtpVerifyPageProps) {
+  const searchParams = useSP();
   const email = searchParams?.get("email") ?? "";
   const role = propRole ?? (searchParams?.get("role") as string) ?? "user";
 
@@ -27,27 +26,18 @@ const OtpVerifyPage: React.FC<OtpVerifyPageProps> = ({ role: propRole }) => {
     useOtpVerify({ email, role });
 
   const [resendTimer, setResendTimer] = useState(60);
-  const [canResend, setCanResend] = useState(false);
-
-  useEffect(() => {
-    if (!email) {
-      router.replace("/users/auth/signup");
-    }
-  }, [email, router]);
+  const canResend = resendTimer === 0;
 
   useEffect(() => {
     if (resendTimer > 0) {
-      const timer = setTimeout(() => setResendTimer(resendTimer - 1), 1000);
+      const timer = setTimeout(() => setResendTimer((prev) => prev - 1), 1000);
       return () => clearTimeout(timer);
-    } else {
-      setCanResend(true);
     }
   }, [resendTimer]);
 
   const onResend = async () => {
     await handleResend();
     setResendTimer(60);
-    setCanResend(false);
   };
 
   return (
@@ -118,6 +108,14 @@ const OtpVerifyPage: React.FC<OtpVerifyPageProps> = ({ role: propRole }) => {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+const OtpVerifyPage: React.FC<OtpVerifyPageProps> = (props) => {
+  return (
+    <Suspense>
+      <OtpVerifyContent {...props} />
+    </Suspense>
   );
 };
 

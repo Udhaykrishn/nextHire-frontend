@@ -1,7 +1,12 @@
 "use client";
 
 import { Eye, ShieldAlert, ShieldCheck } from "lucide-react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
+  usePathname,
+  useRouter,
+  useSearchParams as useSP,
+} from "next/navigation";
+import { Suspense } from "react";
 import { ConfirmModal } from "@/components/common/confirm-modal";
 import {
   type Action,
@@ -25,7 +30,7 @@ interface RecruitersTableProps {
   currentStatus: string;
 }
 
-export function RecruitersTable({
+function RecruitersTableContent({
   recruiters,
   total,
   page,
@@ -35,7 +40,7 @@ export function RecruitersTable({
 }: RecruitersTableProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const searchParams = useSP();
   const {
     isLoading,
     confirm,
@@ -189,5 +194,13 @@ export function RecruitersTable({
         />
       )}
     </>
+  );
+}
+
+export function RecruitersTable(props: RecruitersTableProps) {
+  return (
+    <Suspense>
+      <RecruitersTableContent {...props} />
+    </Suspense>
   );
 }
