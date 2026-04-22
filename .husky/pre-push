@@ -1,1 +1,3 @@
-bunx snyk code test
+bun lint
+bun doctor
+bun code-test
