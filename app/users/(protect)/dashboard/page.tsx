@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
-import { DashboardContent } from "@/modules/users/components/dashboard-content";
+import { DashboardClient } from "./dashboard-client";
+
+export const metadata: Metadata = {
+  title: "Candidate Dashboard | NextHire",
+  description: "Track your job applications and explore new opportunities.",
+};
 
 export default function DashboardPage() {
   return (
@@ -9,9 +15,9 @@ export default function DashboardPage() {
           <div className="flex flex-1 flex-col gap-6 animate-pulse">
             <div className="h-48 w-full bg-slate-100 dark:bg-zinc-800 rounded-xl" />
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              {[1, 2, 3, 4].map((i) => (
+              {[1, 2, 3, 4].map((item) => (
                 <div
-                  key={i}
+                  key={`stat-skeleton-${item}`}
                   className="h-24 bg-slate-100 dark:bg-zinc-800 rounded-xl"
                 />
               ))}
@@ -23,7 +29,7 @@ export default function DashboardPage() {
           </div>
         }
       >
-        <DashboardContent />
+        <DashboardClient />
       </Suspense>
     </div>
   );

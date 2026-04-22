@@ -1,16 +1,17 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-export type UserRole = "candidate" | "employer" | "admin";
+import { UserRole } from "@/constants";
 
 export interface User {
-  id: string;
+  id?: string;
   name: string;
   email: string;
-  role: UserRole;
+  role: UserRole | string;
   phone?: string;
   experience?: string;
   role_of_title?: string;
+  location?: string;
   resume_url?: { key: string; url: string };
   profile_url?: { key: string; url: string };
   bio?: string;

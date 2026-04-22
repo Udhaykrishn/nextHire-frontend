@@ -6,6 +6,7 @@ export interface User {
   phone: string;
   experience: string;
   role_of_title: string;
+  location?: string;
   status: string;
   resume_url: {
     key: string;

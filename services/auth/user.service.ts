@@ -105,4 +105,8 @@ export const UserAuthService = {
     const response = await userApi.delete<User>("/user/profile/resume/upload");
     return response.data;
   },
+  getProfile: async (): Promise<User> => {
+    const response = await userApi.get<User>("/user/profile");
+    return response.data;
+  },
 };

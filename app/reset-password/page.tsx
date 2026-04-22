@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import ResetPasswordClient from "@/modules/auth/pages/reset-password";
+
+export const metadata: Metadata = {
+  title: "Reset Password | NextHire",
+  description: "Create a new password for your account.",
+};
 
 export default function ResetPasswordPage() {
   return (

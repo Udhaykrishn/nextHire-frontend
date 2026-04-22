@@ -58,6 +58,7 @@ export const useLogin = ({
     }
     setErrors({});
     setIsLoading(true); // Start loading
+    let dashboardRoute: string | null = null;
     try {
       const payload: LoginFormData = result.data;
       const { role: _, ...credentials } = payload;
@@ -70,14 +71,12 @@ export const useLogin = ({
 
       toast.success("Login successful!");
 
-      const dashboardRoute =
+      dashboardRoute =
         role === USER_ROLES.RECRUITER
           ? ROUTES.PROTECTED.RECRUITER_DASHBOARD
           : role === USER_ROLES.ADMIN
             ? ROUTES.PROTECTED.ADMIN_DASHBOARD
             : ROUTES.PROTECTED.USER_DASHBOARD;
-
-      redirect(dashboardRoute);
     } catch (err) {
       console.error("Login failed:", err);
       const error = err as ApiError;
@@ -87,6 +86,10 @@ export const useLogin = ({
       setErrors({});
     } finally {
       setIsLoading(false); // Stop loading
+    }
+
+    if (dashboardRoute) {
+      redirect(dashboardRoute);
     }
   };
 

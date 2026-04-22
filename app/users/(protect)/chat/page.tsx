@@ -1,3 +1,10 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Messages | NextHire",
+  description: "Chat with recruiters and hiring managers on NextHire.",
+};
+
 export default function ChatPage() {
   return (
     <div className="flex flex-1 h-[calc(100vh-8rem)] gap-4">

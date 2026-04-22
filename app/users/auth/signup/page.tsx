@@ -1,5 +1,12 @@
+import { Metadata } from "next";
 import { AuthLayout } from "@/modules/auth/components/auth-layout";
 import SignupPage from "@/modules/auth/pages/signup";
+
+export const metadata: Metadata = {
+  title: "Create Account | NextHire",
+  description:
+    "Join NextHire today to connect with top employers and advance your career.",
+};
 
 const page = () => {
   return (

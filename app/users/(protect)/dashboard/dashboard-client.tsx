@@ -39,6 +39,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/animate-ui/primitives/radix/dropdown-menu";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useProfileData } from "@/modules/users/hooks/use-profile-data";
 import { Avatar, AvatarFallback, AvatarImage } from "@/ui/avatar";
 import {
   Breadcrumb,
@@ -84,19 +85,20 @@ const DATA = {
   ],
 };
 
-interface DashboardClientProps {
-  usersData?: unknown;
-  recruitersData?: unknown;
-}
-
-export function DashboardClient({
-  usersData: _initialUsersData,
-  recruitersData: _recruitersData,
-}: DashboardClientProps) {
+export function DashboardClient() {
   const isMobile = useIsMobile();
   const [activeView, setActiveView] = React.useState("users");
+  const { user: profileUser, isLoading: isProfileLoading } = useProfileData();
+
+  const user = profileUser || DATA.user;
 
   const activeItem = DATA.navMain.find((item) => item.id === activeView);
+
+  if (isProfileLoading) {
+    return (
+      <div className="flex flex-1 items-center justify-center">Loading...</div>
+    );
+  }
 
   return (
     <SidebarProvider>
@@ -144,18 +146,18 @@ export function DashboardClient({
                   >
                     <Avatar className="h-8 w-8 rounded-lg">
                       <AvatarImage
-                        src={DATA.user.avatar}
-                        alt={DATA.user.name}
+                        src={user.avatar || user.profile_picture?.url}
+                        alt={user.name}
                       />
-                      <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                      <AvatarFallback className="rounded-lg">
+                        {user.name?.charAt(0) || "U"}
+                      </AvatarFallback>
                     </Avatar>
                     <div className="grid flex-1 text-left text-sm leading-tight">
                       <span className="truncate font-semibold">
-                        {DATA.user.name}
+                        {user.name}
                       </span>
-                      <span className="truncate text-xs">
-                        {DATA.user.email}
-                      </span>
+                      <span className="truncate text-xs">{user.email}</span>
                     </div>
                     <ChevronsUpDown className="ml-auto size-4" />
                   </SidebarMenuButton>
@@ -170,20 +172,18 @@ export function DashboardClient({
                     <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                       <Avatar className="h-8 w-8 rounded-lg">
                         <AvatarImage
-                          src={DATA.user.avatar}
-                          alt={DATA.user.name}
+                          src={user.avatar || user.profile_picture?.url}
+                          alt={user.name}
                         />
                         <AvatarFallback className="rounded-lg">
-                          CN
+                          {user.name?.charAt(0) || "U"}
                         </AvatarFallback>
                       </Avatar>
                       <div className="grid flex-1 text-left text-sm leading-tight">
                         <span className="truncate font-semibold">
-                          {DATA.user.name}
+                          {user.name}
                         </span>
-                        <span className="truncate text-xs">
-                          {DATA.user.email}
-                        </span>
+                        <span className="truncate text-xs">{user.email}</span>
                       </div>
                     </div>
                   </DropdownMenuLabel>
