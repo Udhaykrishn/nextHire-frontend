@@ -1,14 +1,14 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams as useSP } from "next/navigation";
 import { UsersTable } from "@/modules/users/components/users-table";
 import { UserManagementService } from "@/services/admin/user-management.service";
 
 const USERS_PER_PAGE = 5;
 
 export function UsersClient() {
-  const searchParams = useSearchParams();
+  const searchParams = useSP();
   const page = Number(searchParams?.get("page")) || 1;
   const search = searchParams?.get("search") || "";
 

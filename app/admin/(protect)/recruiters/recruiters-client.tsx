@@ -1,13 +1,13 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams as useSP } from "next/navigation";
 import { RecruiterManagementService } from "@/services/admin/recruiter-management.service";
 import { Skeleton } from "@/ui/skeleton";
 import { RecruitersTabs } from "./recruiters-tabs";
 
 export function RecruitersClient() {
-  const searchParams = useSearchParams();
+  const searchParams = useSP();
   const page = Number(searchParams?.get("page")) || 1;
   const limit = Number(searchParams?.get("limit")) || 5;
   const search = searchParams?.get("search") || "";
