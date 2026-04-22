@@ -3,5 +3,5 @@ set -e
 set -x
 
 bun lint
-bun doctor --no-dead-code --diff master --fail-on error
+bun doctor --no-dead-code --diff dev --fail-on error
 bun code-test
