@@ -34,17 +34,6 @@ export function EditProfileModal({
     phone: user?.phone || "",
   });
 
-  React.useEffect(() => {
-    if (user) {
-      setFormData({
-        name: user.name || "",
-        role_of_title: user.role_of_title || "",
-        bio: user.bio || "",
-        phone: user.phone || "",
-      });
-    }
-  }, [user]);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);

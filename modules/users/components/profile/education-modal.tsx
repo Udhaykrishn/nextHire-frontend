@@ -32,40 +32,29 @@ export function EducationModal({
   onSuccess,
 }: EducationModalProps) {
   const [isLoading, setIsLoading] = React.useState(false);
-  const [formData, setFormData] = React.useState<CreateEducationDto>({
-    institutionName: "",
-    degree: "",
-    fieldOfStudy: "",
-    startDate: "",
-    endDate: "",
-    gpa: "",
-  });
-
-  React.useEffect(() => {
-    if (education) {
-      setFormData({
-        institutionName: education.institutionName || "",
-        degree: education.degree || "",
-        fieldOfStudy: education.fieldOfStudy || "",
-        startDate: education.startDate
-          ? new Date(education.startDate).toISOString().split("T")[0]
-          : "",
-        endDate: education.endDate
-          ? new Date(education.endDate).toISOString().split("T")[0]
-          : "",
-        gpa: education.gpa || "",
-      });
-    } else {
-      setFormData({
-        institutionName: "",
-        degree: "",
-        fieldOfStudy: "",
-        startDate: "",
-        endDate: "",
-        gpa: "",
-      });
-    }
-  }, [education]);
+  const [formData, setFormData] = React.useState<CreateEducationDto>(
+    education
+      ? {
+          institutionName: education.institutionName || "",
+          degree: education.degree || "",
+          fieldOfStudy: education.fieldOfStudy || "",
+          startDate: education.startDate
+            ? new Date(education.startDate).toISOString().split("T")[0]
+            : "",
+          endDate: education.endDate
+            ? new Date(education.endDate).toISOString().split("T")[0]
+            : "",
+          gpa: education.gpa || "",
+        }
+      : {
+          institutionName: "",
+          degree: "",
+          fieldOfStudy: "",
+          startDate: "",
+          endDate: "",
+          gpa: "",
+        },
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

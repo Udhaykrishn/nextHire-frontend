@@ -32,37 +32,27 @@ export function CertificateModal({
   onSuccess,
 }: CertificateModalProps) {
   const [isLoading, setIsLoading] = React.useState(false);
-  const [formData, setFormData] = React.useState<CreateCertificateDto>({
-    certificateName: "",
-    issuingOrganization: "",
-    issueDate: "",
-    expirationDate: "",
-    certificateUrl: "",
-  });
-
-  React.useEffect(() => {
-    if (certificate) {
-      setFormData({
-        certificateName: certificate.certificateName || "",
-        issuingOrganization: certificate.issuingOrganization || "",
-        issueDate: certificate.issueDate
-          ? new Date(certificate.issueDate).toISOString().split("T")[0]
-          : "",
-        expirationDate: certificate.expirationDate
-          ? new Date(certificate.expirationDate).toISOString().split("T")[0]
-          : "",
-        certificateUrl: certificate.certificateUrl || "",
-      });
-    } else {
-      setFormData({
-        certificateName: "",
-        issuingOrganization: "",
-        issueDate: "",
-        expirationDate: "",
-        certificateUrl: "",
-      });
-    }
-  }, [certificate]);
+  const [formData, setFormData] = React.useState<CreateCertificateDto>(
+    certificate
+      ? {
+          certificateName: certificate.certificateName || "",
+          issuingOrganization: certificate.issuingOrganization || "",
+          issueDate: certificate.issueDate
+            ? new Date(certificate.issueDate).toISOString().split("T")[0]
+            : "",
+          expirationDate: certificate.expirationDate
+            ? new Date(certificate.expirationDate).toISOString().split("T")[0]
+            : "",
+          certificateUrl: certificate.certificateUrl || "",
+        }
+      : {
+          certificateName: "",
+          issuingOrganization: "",
+          issueDate: "",
+          expirationDate: "",
+          certificateUrl: "",
+        },
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

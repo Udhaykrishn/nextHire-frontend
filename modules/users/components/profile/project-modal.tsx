@@ -33,37 +33,27 @@ export function ProjectModal({
   onSuccess,
 }: ProjectModalProps) {
   const [isLoading, setIsLoading] = React.useState(false);
-  const [formData, setFormData] = React.useState<CreateProjectDto>({
-    projectName: "",
-    description: "",
-    startDate: "",
-    endDate: "",
-    url: "",
-  });
-
-  React.useEffect(() => {
-    if (project) {
-      setFormData({
-        projectName: project.projectName || "",
-        description: project.description || "",
-        startDate: project.startDate
-          ? new Date(project.startDate).toISOString().split("T")[0]
-          : "",
-        endDate: project.endDate
-          ? new Date(project.endDate).toISOString().split("T")[0]
-          : "",
-        url: project.url || "",
-      });
-    } else {
-      setFormData({
-        projectName: "",
-        description: "",
-        startDate: "",
-        endDate: "",
-        url: "",
-      });
-    }
-  }, [project]);
+  const [formData, setFormData] = React.useState<CreateProjectDto>(
+    project
+      ? {
+          projectName: project.projectName || "",
+          description: project.description || "",
+          startDate: project.startDate
+            ? new Date(project.startDate).toISOString().split("T")[0]
+            : "",
+          endDate: project.endDate
+            ? new Date(project.endDate).toISOString().split("T")[0]
+            : "",
+          url: project.url || "",
+        }
+      : {
+          projectName: "",
+          description: "",
+          startDate: "",
+          endDate: "",
+          url: "",
+        },
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

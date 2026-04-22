@@ -5,34 +5,18 @@ import * as React from "react";
 import { toast } from "sonner";
 import { Slot } from "@/components/animate-ui/primitives/animate/slot";
 import { EditProfileModal } from "@/modules/users/components/profile/edit-profile-modal";
+import { type User } from "@/stores/auth-store";
 import { Avatar, AvatarFallback, AvatarImage } from "@/ui/avatar";
 import { Button } from "@/ui/button";
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  phone?: string;
-  profile_url?: { key: string; url: string };
-  role_of_title?: string;
-  location?: string;
-  bio?: string;
-}
 
 interface ProfileHeaderProps {
   user: User;
 }
 
 export function ProfileHeader({ user }: ProfileHeaderProps) {
+  const { updateUser } = useAuthStore();
   const fileInputRef = React.useRef<HTMLInputElement>(null);
-  const [avatarUrl, setAvatarUrl] = React.useState(user?.profile_url?.url);
   const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
-
-  React.useEffect(() => {
-    if (user?.profile_url?.url) {
-      setAvatarUrl(user.profile_url.url);
-    }
-  }, [user?.profile_url?.url]);
 
   const handleImageUpload = async (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -40,7 +24,8 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
     const file = event.target.files?.[0];
     if (file) {
       try {
-        const response = await (await import("@/lib/user.api")).userApi.post(
+        const { userApi } = await import("@/lib/user.api");
+        const response = await userApi.post(
           "/user/profile/upload",
           (() => {
             const formData = new FormData();
@@ -50,7 +35,7 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
           { headers: { "Content-Type": "multipart/form-data" } },
         );
         if (response.data) {
-          setAvatarUrl(response.data.profile_url?.url);
+          updateUser(response.data);
           toast.success("Profile picture updated successfully");
         }
       } catch (_error) {
@@ -100,7 +85,7 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
               >
                 <Avatar className="h-32 w-32 border-4 border-card">
                   <AvatarImage
-                    src={avatarUrl}
+                    src={user?.profile_url?.url}
                     alt={user?.name}
                     className="object-cover"
                   />
@@ -152,6 +137,7 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
           </div>
         </Slot>
         <EditProfileModal
+          key={user?.id || "edit-profile"}
           open={isEditModalOpen}
           onOpenChange={setIsEditModalOpen}
         />

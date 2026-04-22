@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "My Profile | NextHire",
+  description: "View and manage your professional profile on NextHire.",
+};
+
 import { ProfileClient } from "@/modules/users/components/profile/profile-client";
 
 export default function ProfilePage() {
