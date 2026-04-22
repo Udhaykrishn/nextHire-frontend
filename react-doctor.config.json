@@ -1,0 +1,8 @@
+{
+  "lint": true,
+  "deadCode": true,
+  "ignore": {
+    "rules": ["react/no-danger", "jsx-a11y/no-autofocus"],
+    "files": ["components/animate-ui/**", "ui/**"]
+  }
+}

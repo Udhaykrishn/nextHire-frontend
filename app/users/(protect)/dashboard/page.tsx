@@ -1,16 +1,36 @@
-import { userApi } from '@/lib/user.api';
-import { DashboardClient } from './dashboard-client';
+import type { Metadata } from "next";
+import { Suspense } from "react";
+import { DashboardClient } from "./dashboard-client";
 
-export default async function Page() {
-    try {
-        const { data } = await userApi.get("/user", { params: { page: 1, limit: 10 } });
-        console.log(data);
-        return <DashboardClient usersData={data} />;
-    } catch (error: any) {
-        if (error?.digest?.startsWith('NEXT_REDIRECT')) {
-            throw error;
+export const metadata: Metadata = {
+  title: "Candidate Dashboard | NextHire",
+  description: "Track your job applications and explore new opportunities.",
+};
+
+export default function DashboardPage() {
+  return (
+    <div className="flex flex-1 flex-col gap-6">
+      <Suspense
+        fallback={
+          <div className="flex flex-1 flex-col gap-6 animate-pulse">
+            <div className="h-48 w-full bg-slate-100 dark:bg-zinc-800 rounded-xl" />
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+              {[1, 2, 3, 4].map((item) => (
+                <div
+                  key={`stat-skeleton-${item}`}
+                  className="h-24 bg-slate-100 dark:bg-zinc-800 rounded-xl"
+                />
+              ))}
+            </div>
+            <div className="grid gap-6 lg:grid-cols-2">
+              <div className="h-64 bg-slate-100 dark:bg-zinc-800 rounded-xl" />
+              <div className="h-64 bg-slate-100 dark:bg-zinc-800 rounded-xl" />
+            </div>
+          </div>
         }
-        console.error("Dashboard page fetch error:", error);
-        return <DashboardClient />;
-    }
+      >
+        <DashboardClient />
+      </Suspense>
+    </div>
+  );
 }

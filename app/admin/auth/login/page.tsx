@@ -1,27 +1,17 @@
-"use client"
+import type { Metadata } from "next";
+import { LoginContent } from "./login-client";
 
-import LoginPage from "@/modules/auth/pages/login"
-import { Suspense } from "react"
-import { AppLayout } from "@/components/app-layout"
+export const metadata: Metadata = {
+  title: "Admin Login | NextHire",
+  description: "Secure login for NextHire administrators.",
+};
 
-function LoginContent() {
-    return (
-        <LoginPage
-            role={"admin"}
-            onLogin={() => { }}
-            onSocialLogin={(provider) => console.log("Social login:", provider)}
-        />
-    )
+export default function AdminPage() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-background p-6">
+      <div className="w-full max-w-md">
+        <LoginContent />
+      </div>
+    </div>
+  );
 }
-
-const page = () => {
-    return (
-        <AppLayout>
-            <Suspense fallback={<div>Loading...</div>}>
-                <LoginContent />
-            </Suspense>
-        </AppLayout>
-    )
-}
-
-export default page

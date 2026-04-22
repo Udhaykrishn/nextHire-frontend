@@ -1,6 +1,6 @@
-import { Role } from "./user-role";
+import { UserRole } from "@/constants";
 
 export interface ForgotPasswordData {
   email: string;
-  role: Role;
+  role: UserRole;
 }

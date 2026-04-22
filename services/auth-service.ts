@@ -1,6 +1,7 @@
 import { USER_ROLES, UserRole } from "@/constants";
-import { UserAuthService } from "./auth/user.service";
+import { AdminAuthService } from "./auth/admin.service";
 import { RecruiterAuthService } from "./auth/recruiter.service";
+import { UserAuthService } from "./auth/user.service";
 
 /**
  * Get the appropriate auth service based on user role
@@ -8,8 +9,11 @@ import { RecruiterAuthService } from "./auth/recruiter.service";
  * @returns The corresponding auth service
  */
 export function getAuthService(role: UserRole) {
-    if (role === USER_ROLES.RECRUITER) {
-        return RecruiterAuthService;
-    }
-    return UserAuthService;
+  if (role === USER_ROLES.RECRUITER) {
+    return RecruiterAuthService;
+  }
+  if (role === USER_ROLES.ADMIN) {
+    return AdminAuthService;
+  }
+  return UserAuthService;
 }

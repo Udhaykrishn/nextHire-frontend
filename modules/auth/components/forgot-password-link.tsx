@@ -1,21 +1,21 @@
 import { Button } from "@/components/animate-ui/components/buttons/button";
-import { Icons } from "./icons";
 
 interface ForgotPasswordLinkProps {
   onClick: () => void;
 }
 
-export const ForgotPasswordLink: React.FC<ForgotPasswordLinkProps> = ({ onClick }) => {
+export const ForgotPasswordLink: React.FC<ForgotPasswordLinkProps> = ({
+  onClick,
+}) => {
   return (
-    <div className="flex justify-end">
+    <div className="flex justify-end pt-1">
       <Button
         type="button"
         variant="link"
         onClick={onClick}
-        className="text-sm text-cyan-400 hover:text-cyan-500 font-medium p-0 h-auto"
+        className="text-[10px] text-cyan-500 hover:text-cyan-600 font-black uppercase tracking-widest p-0 h-auto italic"
       >
-        <Icons.help className="w-4 h-4 mr-1" />
-        Forgot password?
+        Retrieve Secret Key
       </Button>
     </div>
   );

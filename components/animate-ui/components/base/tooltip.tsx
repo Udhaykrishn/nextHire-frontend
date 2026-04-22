@@ -1,20 +1,18 @@
-import * as React from 'react';
-
 import {
-  TooltipProvider as TooltipProviderPrimitive,
-  Tooltip as TooltipPrimitive,
-  TooltipTrigger as TooltipTriggerPrimitive,
-  TooltipPositioner as TooltipPositionerPrimitive,
-  TooltipPopup as TooltipPopupPrimitive,
   TooltipArrow as TooltipArrowPrimitive,
-  TooltipPortal as TooltipPortalPrimitive,
-  type TooltipProviderProps as TooltipProviderPrimitiveProps,
-  type TooltipProps as TooltipPrimitiveProps,
-  type TooltipTriggerProps as TooltipTriggerPrimitiveProps,
-  type TooltipPositionerProps as TooltipPositionerPrimitiveProps,
+  TooltipPopup as TooltipPopupPrimitive,
   type TooltipPopupProps as TooltipPopupPrimitiveProps,
-} from '@/components/animate-ui/primitives/base/tooltip';
-import { cn } from '@/lib/utils';
+  TooltipPortal as TooltipPortalPrimitive,
+  TooltipPositioner as TooltipPositionerPrimitive,
+  type TooltipPositionerProps as TooltipPositionerPrimitiveProps,
+  Tooltip as TooltipPrimitive,
+  type TooltipProps as TooltipPrimitiveProps,
+  TooltipProvider as TooltipProviderPrimitive,
+  type TooltipProviderProps as TooltipProviderPrimitiveProps,
+  TooltipTrigger as TooltipTriggerPrimitive,
+  type TooltipTriggerProps as TooltipTriggerPrimitiveProps,
+} from "@/components/animate-ui/primitives/base/tooltip";
+import { cn } from "@/lib/utils";
 
 type TooltipProviderProps = TooltipProviderPrimitiveProps;
 
@@ -23,7 +21,7 @@ function TooltipProvider({ delay = 0, ...props }: TooltipProviderProps) {
 }
 
 type TooltipProps = TooltipPrimitiveProps & {
-  delay?: TooltipPrimitiveProps['delay'];
+  delay?: number;
 };
 
 function Tooltip({ delay = 0, ...props }: TooltipProps) {
@@ -59,7 +57,7 @@ function TooltipPanel({
       >
         <TooltipPopupPrimitive
           className={cn(
-            'bg-primary text-primary-foreground w-fit origin-(--transform-origin) rounded-md px-3 py-1.5 text-xs text-balance',
+            "bg-primary text-primary-foreground w-fit origin-(--transform-origin) rounded-md px-3 py-1.5 text-xs text-balance",
             className,
           )}
           style={style}

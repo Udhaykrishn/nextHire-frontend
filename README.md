@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<p align="center">
+  <a href="https://nexthire.shop" target="blank"><img src="https://nextjs.org/static/favicon/next-logo.svg" width="120" alt="NextHire Logo" /></a>
+</p>
 
-## Getting Started
+# NextHire Frontend
 
-First, run the development server:
+The high-performance, visually stunning frontend for the NextHire recruitment platform. Built with **Next.js 14 (App Router)** and following the **Kraken Design System**, it delivers a premium, fintech-inspired user experience.
 
+## ✨ Features
+
+- **Fintech Identity**: Authoritative, "Wise-inspired" aesthetics using the Kraken Design System.
+- **Micro-Interactions**: Fluid animations powered by **Framer Motion** and **Animate UI**.
+- **Modern Data Fetching**: Optimized state management with **TanStack Query** and **Zustand**.
+- **Strict Quality**: Automated linting and formatting via **Biome** with a **zero-error** policy.
+- **Accessibility**: WCAG-compliant interactive components.
+
+## 🚀 Teck Stack
+
+- **Framework**: [Next.js](https://nextjs.org/) (App Router)
+- **Styling**: Vanilla CSS (Modern CSS Modules & Layout Primitives)
+- **Animations**: [Animate UI](https://animate-ui.com/) & [Framer Motion](https://www.framer.com/motion/)
+- **State Management**: [Zustand](https://zustand-demo.pmnd.rs/)
+- **Data Fetching**: [TanStack Query](https://tanstack.com/query/latest)
+- **Language**: TypeScript (Strict Mode)
+- **Runtime**: [Bun](https://bun.sh/)
+- **Linting**: [Biome](https://biomejs.dev/)
+
+## 🧱 Directory Structure
+
+- **src/app**: Next.js App Router pages and layouts.
+- **src/modules**: Feature-specific modules (auth, profile, jobs, etc.) containing localized logic and components.
+- **src/components**: Shared, reusable UI components (common, navbar, footer).
+- **src/ui**: Low-level, high-performance UI primitives (locked for modification).
+- **src/services**: API communication layer.
+- **src/stores**: Global state definitions.
+- **src/types**: Centralized TypeScript definitions.
+
+## 🛠️ Project Setup
+
+### Installation
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+$ bun install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Development
+```bash
+$ bun run dev
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Production Build
+```bash
+$ bun run build
+$ bun run start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛡️ Guidelines & Quality
 
-## Learn More
+- **Zero `any`**: TypeScript strictness is enforced. All `any` usage is prohibited.
+- **No Linter Suppression**: `biome-ignore` is banned. All code quality issues must be refactored.
+- **UI Lockdown**: Files in `src/ui` and `src/components/animate-ui` are core libraries and must not be modified locally.
+- Refer to [AGENTS.md](./AGENTS.md) for full compliance details.
 
-To learn more about Next.js, take a look at the following resources:
+## 📄 License
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+NextHire Frontend is [MIT licensed](./LICENSE).

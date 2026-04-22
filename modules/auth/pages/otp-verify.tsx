@@ -1,116 +1,122 @@
-"use client"
+"use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useOtpVerify } from "../hooks/useOtpVerify";
-import SubmitButton from "../components/submit-button";
+import { useSearchParams as useSP } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 import { Card, CardContent } from "@/ui/card";
-import { Icons } from "../components/icons";
 import {
-    InputOTP,
-    InputOTPGroup,
-    InputOTPSlot,
-    REGEXP_ONLY_DIGITS_STR,
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+  REGEXP_ONLY_DIGITS_STR,
 } from "@/ui/input-otp";
+import { Icons } from "../components/icons";
+import SubmitButton from "../components/submit-button";
+import { useOtpVerify } from "../hooks/useOtpVerify";
 
-const OtpVerifyPage: React.FC = () => {
-    const router = useRouter();
-    const searchParams = useSearchParams();
-    const email = searchParams?.get("email") ?? "";
-    const role = (searchParams?.get("role") as any) ?? "user";
+interface OtpVerifyPageProps {
+  role?: string;
+}
 
-    const { otp, handleChange, errors, isLoading, handleSubmit, handleResend } = useOtpVerify({ email, role });
+function OtpVerifyContent({ role: propRole }: OtpVerifyPageProps) {
+  const searchParams = useSP();
+  const email = searchParams?.get("email") ?? "";
+  const role = propRole ?? (searchParams?.get("role") as string) ?? "user";
 
-    const [resendTimer, setResendTimer] = useState(60);
-    const [canResend, setCanResend] = useState(false);
+  const { otp, handleChange, errors, isLoading, handleSubmit, handleResend } =
+    useOtpVerify({ email, role });
 
-    useEffect(() => {
-        if (!email) {
-            router.replace("/users/auth/signup");
-        }
-    }, [email, router]);
+  const [resendTimer, setResendTimer] = useState(60);
+  const canResend = resendTimer === 0;
 
-    useEffect(() => {
-        if (resendTimer > 0) {
-            const timer = setTimeout(() => setResendTimer(resendTimer - 1), 1000);
-            return () => clearTimeout(timer);
-        } else {
-            setCanResend(true);
-        }
-    }, [resendTimer]);
+  useEffect(() => {
+    if (resendTimer > 0) {
+      const timer = setTimeout(() => setResendTimer((prev) => prev - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [resendTimer]);
 
-    const onResend = async () => {
-        await handleResend();
-        setResendTimer(60);
-        setCanResend(false);
-    };
+  const onResend = async () => {
+    await handleResend();
+    setResendTimer(60);
+  };
 
-    return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-cyan-50/30 via-cyan-100/20 to-blue-50/30 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900 p-4">
-            <Card className="w-full max-w-md shadow-2xl border-0 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-sm">
-                <CardContent className="space-y-6 p-8">
-                    <div className="text-center space-y-2">
-                        <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                            <Icons.email className="w-8 h-8 text-primary" />
-                        </div>
-                        <h2 className="text-2xl font-semibold">Verify Your Email</h2>
-                        <p className="text-muted-foreground">
-                            We sent a 6-digit code to <br />
-                            <span className="font-medium text-foreground">{email}</span>
-                        </p>
-                    </div>
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-cyan-50/30 via-cyan-100/20 to-blue-50/30 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900 p-4">
+      <Card className="w-full max-w-md shadow-2xl border-0 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-sm">
+        <CardContent className="space-y-6 p-8">
+          <div className="text-center space-y-2">
+            <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+              <Icons.email className="w-8 h-8 text-primary" />
+            </div>
+            <h2 className="text-2xl font-semibold">Verify Your Email</h2>
+            <p className="text-muted-foreground">
+              We sent a 6-digit code to <br />
+              <span className="font-medium text-foreground">{email}</span>
+            </p>
+          </div>
 
-                    <div className="space-y-4">
-                        <div className="flex justify-center">
-                            <InputOTP
-                                maxLength={6}
-                                value={otp}
-                                onChange={handleChange}
-                                pattern={REGEXP_ONLY_DIGITS_STR}
-                            >
-                                <InputOTPGroup>
-                                    <InputOTPSlot index={0} />
-                                    <InputOTPSlot index={1} />
-                                    <InputOTPSlot index={2} />
-                                    <InputOTPSlot index={3} />
-                                    <InputOTPSlot index={4} />
-                                    <InputOTPSlot index={5} />
-                                </InputOTPGroup>
-                            </InputOTP>
-                        </div>
-                        {errors.root && (
-                            <p className="text-red-600 dark:text-red-400 text-sm text-center">{errors.root}</p>
-                        )}
-                    </div>
+          <div className="space-y-4">
+            <div className="flex justify-center">
+              <InputOTP
+                maxLength={6}
+                value={otp}
+                onChange={handleChange}
+                pattern={REGEXP_ONLY_DIGITS_STR}
+              >
+                <InputOTPGroup>
+                  <InputOTPSlot index={0} />
+                  <InputOTPSlot index={1} />
+                  <InputOTPSlot index={2} />
+                  <InputOTPSlot index={3} />
+                  <InputOTPSlot index={4} />
+                  <InputOTPSlot index={5} />
+                </InputOTPGroup>
+              </InputOTP>
+            </div>
+            {errors.root && (
+              <p className="text-red-600 dark:text-red-400 text-sm text-center">
+                {errors.root}
+              </p>
+            )}
+          </div>
 
-                    <SubmitButton
-                        onClick={handleSubmit}
-                        label="Verify OTP"
-                        icon={Icons.lock}
-                    />
+          <SubmitButton
+            onClick={handleSubmit}
+            label="Verify OTP"
+            icon={Icons.lock}
+          />
 
-                    <div className="text-center">
-                        <p className="text-sm text-muted-foreground">
-                            Didn't receive the code?{" "}
-                            {canResend ? (
-                                <button
-                                    onClick={onResend}
-                                    disabled={isLoading}
-                                    className="text-primary font-medium hover:underline disabled:opacity-50"
-                                >
-                                    Resend OTP
-                                </button>
-                            ) : (
-                                <span className="text-foreground font-medium">
-                                    Resend in {resendTimer}s
-                                </span>
-                            )}
-                        </p>
-                    </div>
-                </CardContent>
-            </Card>
-        </div>
-    );
+          <div className="text-center">
+            <p className="text-sm text-muted-foreground">
+              Didn't receive the code?{" "}
+              {canResend ? (
+                <button
+                  type="button"
+                  onClick={onResend}
+                  disabled={isLoading}
+                  className="text-primary font-medium hover:underline disabled:opacity-50"
+                >
+                  Resend OTP
+                </button>
+              ) : (
+                <span className="text-foreground font-medium">
+                  Resend in {resendTimer}s
+                </span>
+              )}
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+const OtpVerifyPage: React.FC<OtpVerifyPageProps> = (props) => {
+  return (
+    <Suspense>
+      <OtpVerifyContent {...props} />
+    </Suspense>
+  );
 };
 
 export default OtpVerifyPage;

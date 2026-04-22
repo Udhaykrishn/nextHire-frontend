@@ -1,0 +1,7 @@
+#!/bin/sh
+set -e
+set -x
+
+bun lint
+bun doctor --no-dead-code --diff dev --fail-on error
+bun code-test

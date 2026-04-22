@@ -1,32 +1,50 @@
-"use client"
+"use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { toast } from "sonner";
+import { ROUTES, USER_ROLES, UserRole } from "@/constants";
+import { getAuthService } from "@/services/auth-service";
+import { useAuthStore } from "@/stores/auth-store";
 import {
   ForgotPasswordData,
   LoginFormData,
   SocialLoginData,
   UseLoginProps,
 } from "../types";
-import { loginSchema } from "../validation/login-schema.validation";
-import { getAuthService } from "@/services/auth-service";
-import { ROUTES, USER_ROLES, UserRole } from "@/constants";
 import { redirect } from "../utils/redirect";
+import { loginSchema } from "../validation/login-schema.validation";
+
+type ApiError = {
+  response?: {
+    data?: {
+      error: {
+        message: string;
+      };
+    };
+  };
+};
 
 export const useLogin = ({
   role = "user",
-  onLogin,
+  // onLogin, // Unused
   onForgotPassword,
   onSocialLogin,
 }: UseLoginProps) => {
-  const router = useRouter();
+  const _router = useRouter();
+  const { login } = useAuthStore();
   const [form, setForm] = useState<{ email: string; password: string }>({
     email: "",
     password: "",
   });
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [errors, setErrors] = useState<{ email?: string; password?: string; root?: string }>({});
+  const [errors, setErrors] = useState<{
+    email?: string;
+    password?: string;
+    root?: string;
+  }>({});
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async () => {
     const result = loginSchema.safeParse({ ...form, role });
@@ -39,30 +57,43 @@ export const useLogin = ({
       return;
     }
     setErrors({});
+    setIsLoading(true); // Start loading
+    let dashboardRoute: string | null = null;
     try {
       const payload: LoginFormData = result.data;
       const { role: _, ...credentials } = payload;
 
       const authService = getAuthService(role as UserRole);
-      console.log("is getting the credentials", credentials)
+      console.log("is getting the credentials", credentials);
       const response = await authService.login(credentials);
+
+      login(response.user);
 
       toast.success("Login successful!");
 
-      const dashboardRoute = role === USER_ROLES.RECRUITER
-        ? ROUTES.PROTECTED.RECRUITER_DASHBOARD
-        : ROUTES.PROTECTED.USER_DASHBOARD;
-
-      redirect(dashboardRoute);
-
-    } catch (error: any) {
-      console.error("Login failed:", error);
-      const errorMessage = error.response?.data?.error.message || "login failed";
+      dashboardRoute =
+        role === USER_ROLES.RECRUITER
+          ? ROUTES.PROTECTED.RECRUITER_DASHBOARD
+          : role === USER_ROLES.ADMIN
+            ? ROUTES.PROTECTED.ADMIN_DASHBOARD
+            : ROUTES.PROTECTED.USER_DASHBOARD;
+    } catch (err) {
+      console.error("Login failed:", err);
+      const error = err as ApiError;
+      const errorMessage =
+        error.response?.data?.error.message || "login failed";
       toast.error(errorMessage);
-      setErrors({
-      });
+      setErrors({});
+    } finally {
+      setIsLoading(false); // Stop loading
+    }
+
+    if (dashboardRoute) {
+      redirect(dashboardRoute);
     }
   };
+
+  // ... (rest of the file)
 
   const handleSocialLogin = (provider: string) => {
     const payload: SocialLoginData = { provider, role };
@@ -71,7 +102,10 @@ export const useLogin = ({
   };
 
   const handleForgotPassword = () => {
-    const payload: ForgotPasswordData = { email: form.email, role: role as any };
+    const payload: ForgotPasswordData = {
+      email: form.email,
+      role: role as UserRole,
+    };
     onForgotPassword?.(payload);
     console.log("Forgot password:", payload);
   };
@@ -96,5 +130,6 @@ export const useLogin = ({
     handleSocialLogin,
     handleForgotPassword,
     errors,
+    isLoading,
   };
 };

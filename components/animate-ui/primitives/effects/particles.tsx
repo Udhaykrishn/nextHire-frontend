@@ -1,13 +1,12 @@
-'use client';
+"use client";
 
-import { motion, AnimatePresence, type HTMLMotionProps } from 'motion/react';
-
-import { Slot, type WithAsChild } from '@/components/animate-ui/primitives/animate/slot';
+import { AnimatePresence, type HTMLMotionProps, motion } from "motion/react";
+import * as React from "react";
 import {
-  useIsInView,
-  type UseIsInViewOptions,
-} from '@/hooks/use-is-in-view';
-import * as React from 'react';
+  Slot,
+  type WithAsChild,
+} from "@/components/animate-ui/primitives/animate/slot";
+import { type UseIsInViewOptions, useIsInView } from "@/hooks/use-is-in-view";
 
 type ContextOptions = {
   name?: string;
@@ -30,8 +29,8 @@ export function getStrictContext<T>(
   return [Context.Provider, useContextHook];
 }
 
-type Side = 'top' | 'bottom' | 'left' | 'right';
-type Align = 'start' | 'center' | 'end';
+type Side = "top" | "bottom" | "left" | "right";
+type Align = "start" | "center" | "end";
 
 type ParticlesContextType = {
   animate: boolean;
@@ -39,10 +38,10 @@ type ParticlesContextType = {
 };
 
 const [ParticlesProvider, useParticles] =
-  getStrictContext<ParticlesContextType>('ParticlesContext');
+  getStrictContext<ParticlesContextType>("ParticlesContext");
 
 type ParticlesProps = WithAsChild<
-  Omit<HTMLMotionProps<'div'>, 'children'> & {
+  Omit<HTMLMotionProps<"div">, "children"> & {
     animate?: boolean;
     children: React.ReactNode;
   } & UseIsInViewOptions
@@ -53,7 +52,7 @@ function Particles({
   animate = true,
   asChild = false,
   inView = false,
-  inViewMargin = '0px',
+  inViewMargin = "0px",
   inViewOnce = true,
   children,
   style,
@@ -70,7 +69,7 @@ function Particles({
     <ParticlesProvider value={{ animate, isInView }}>
       <Component
         ref={localRef}
-        style={{ position: 'relative', ...style }}
+        style={{ position: "relative", ...style }}
         {...props}
       >
         {children}
@@ -79,7 +78,7 @@ function Particles({
   );
 }
 
-type ParticlesEffectProps = Omit<HTMLMotionProps<'div'>, 'children'> & {
+type ParticlesEffectProps = Omit<HTMLMotionProps<"div">, "children"> & {
   side?: Side;
   align?: Align;
   count?: number;
@@ -93,8 +92,8 @@ type ParticlesEffectProps = Omit<HTMLMotionProps<'div'>, 'children'> & {
 };
 
 function ParticlesEffect({
-  side = 'top',
-  align = 'center',
+  side = "top",
+  align = "center",
   count = 6,
   radius = 30,
   spread = 360,
@@ -109,26 +108,26 @@ function ParticlesEffect({
 }: ParticlesEffectProps) {
   const { animate, isInView } = useParticles();
 
-  const isVertical = side === 'top' || side === 'bottom';
-  const alignPct = align === 'start' ? '0%' : align === 'end' ? '100%' : '50%';
+  const isVertical = side === "top" || side === "bottom";
+  const alignPct = align === "start" ? "0%" : align === "end" ? "100%" : "50%";
 
   const top = isVertical
-    ? side === 'top'
+    ? side === "top"
       ? `calc(0% - ${sideOffset}px)`
       : `calc(100% + ${sideOffset}px)`
     : `calc(${alignPct} + ${alignOffset}px)`;
 
   const left = isVertical
     ? `calc(${alignPct} + ${alignOffset}px)`
-    : side === 'left'
+    : side === "left"
       ? `calc(0% - ${sideOffset}px)`
       : `calc(100% + ${sideOffset}px)`;
 
   const containerStyle: React.CSSProperties = {
-    position: 'absolute',
+    position: "absolute",
     top,
     left,
-    transform: 'translate(-50%, -50%)',
+    transform: "translate(-50%, -50%)",
   };
 
   const angleStep = (spread * (Math.PI / 180)) / Math.max(1, count - 1);
@@ -156,7 +155,7 @@ function ParticlesEffect({
               transition={{
                 duration,
                 delay: delay + i * holdDelay,
-                ease: 'easeOut',
+                ease: "easeOut",
                 ...transition,
               }}
               {...props}

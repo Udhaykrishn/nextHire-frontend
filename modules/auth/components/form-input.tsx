@@ -1,24 +1,26 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/animate-ui/primitives/buttons/button"
-import { ChangeEvent, ReactNode } from "react"
-import { Icons } from "./icons"
-import { Label } from "@/ui/label"
-import { Input } from "@/ui/input"
+import { ChangeEvent, ReactNode } from "react";
+import { Button } from "@/components/animate-ui/primitives/buttons/button";
+import { Input } from "@/ui/input";
+import { Label } from "@/ui/label";
+import { Icons } from "./icons";
 
 interface FormInputProps {
-  id: string
-  name?: string
-  label: string
-  type?: string
-  placeholder?: string
-  value: string
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void
-  required?: boolean
-  icon?: ReactNode
-  showPasswordToggle?: boolean
-  isPasswordVisible?: boolean
-  onTogglePassword?: () => void
+  id: string;
+  name?: string;
+  label: string;
+  type?: string;
+  placeholder?: string;
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  required?: boolean;
+  icon?: ReactNode;
+  showPasswordToggle?: boolean;
+  isPasswordVisible?: boolean;
+  onTogglePassword?: () => void;
+  error?: string;
+  className?: string;
 }
 
 export const FormInput: React.FC<FormInputProps> = ({
@@ -34,10 +36,15 @@ export const FormInput: React.FC<FormInputProps> = ({
   showPasswordToggle = false,
   isPasswordVisible = false,
   onTogglePassword,
+  error,
+  className,
 }) => {
   return (
     <div className="space-y-2">
-      <Label htmlFor={id} className="text-sm font-medium text-gray-700">
+      <Label
+        htmlFor={id}
+        className="text-sm font-medium text-gray-700 dark:text-gray-300"
+      >
         {label}
       </Label>
 
@@ -64,8 +71,11 @@ export const FormInput: React.FC<FormInputProps> = ({
           value={value}
           onChange={onChange}
           required={required}
-          className={`w-full focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 ${icon ? "pl-10" : ""
-            } ${showPasswordToggle ? "pr-10" : ""}`}
+          className={`w-full focus:ring-2 ${
+            error
+              ? "border-red-500 focus:ring-red-400 focus:border-red-500"
+              : "focus:ring-cyan-400 focus:border-cyan-400"
+          } ${icon ? "pl-10" : ""} ${showPasswordToggle ? "pr-10" : ""} ${className}`}
         />
 
         {showPasswordToggle && onTogglePassword && (
@@ -84,6 +94,9 @@ export const FormInput: React.FC<FormInputProps> = ({
           </Button>
         )}
       </div>
+      {error && (
+        <p className="text-xs font-semibold text-red-500 mt-1 pl-1">{error}</p>
+      )}
     </div>
-  )
-}
+  );
+};
