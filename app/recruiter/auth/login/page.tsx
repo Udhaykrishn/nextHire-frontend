@@ -1,5 +1,12 @@
+import { Metadata } from "next";
 import { AuthLayout } from "@/modules/auth/components/auth-layout";
 import RecruiterLoginPage from "./login-client";
+
+export const metadata: Metadata = {
+  title: "Recruiter Login | NextHire",
+  description:
+    "Login to NextHire as a recruiter to find and manage top talent.",
+};
 
 const page = () => {
   return (

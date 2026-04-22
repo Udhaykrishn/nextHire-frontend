@@ -1,3 +1,11 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Messages | Recruiter",
+  description:
+    "Chat with candidates and manage your recruitment conversations.",
+};
+
 export default function Page() {
   return (
     <div className="flex flex-1 flex-col gap-4">

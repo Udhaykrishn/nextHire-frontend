@@ -1,43 +1,32 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { recruiterApi } from "@/lib/recruiter.api";
-import { IApiError } from "@/types/api-error";
-import { Recruiter } from "@/types/recruiter";
+import { Recruiter } from "@/services/admin/recruiter-management.service";
 
 interface DashboardClientProps {
   initialUserData?: Recruiter;
 }
 
 export function DashboardClient({ initialUserData }: DashboardClientProps) {
-  const [userData, setUserData] = useState<Recruiter | undefined>(
-    initialUserData,
-  );
-  const [loading, setLoading] = useState(!initialUserData);
+  const { data: userData, isLoading } = useQuery({
+    queryKey: ["recruiter-profile"],
+    queryFn: async () => {
+      const { data } = await recruiterApi.get("/recruiter/profile");
+      return data.data as Recruiter;
+    },
+    initialData: initialUserData,
+  });
 
-  useEffect(() => {
-    if (initialUserData) return;
-
-    async function fetchProfile() {
-      try {
-        const { data } = await recruiterApi.get("/recruiter/profile");
-        setUserData(data.data);
-      } catch (err) {
-        const error = err as IApiError;
-        console.error("Dashboard fetch error:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchProfile();
-  }, [initialUserData]);
-
-  if (loading) {
+  if (isLoading && !userData) {
     return (
       <div className="flex flex-1 flex-col gap-4 animate-pulse">
         <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="aspect-video rounded-xl bg-muted/50" />
+          {[1, 2, 3].map((item) => (
+            <div
+              key={`dash-skeleton-${item}`}
+              className="aspect-video rounded-xl bg-muted/50"
+            />
           ))}
         </div>
         <div className="min-h-[50vh] flex-1 rounded-xl bg-muted/50" />

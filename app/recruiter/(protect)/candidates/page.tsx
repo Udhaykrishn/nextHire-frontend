@@ -1,3 +1,10 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Candidates | Recruiter",
+  description: "Browse and discover top talent for your open positions.",
+};
+
 export default function Page() {
   return (
     <div className="flex flex-1 flex-col gap-4">

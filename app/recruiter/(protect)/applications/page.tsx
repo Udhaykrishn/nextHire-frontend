@@ -1,3 +1,10 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Applications | Recruiter",
+  description: "Review and manage job applications from candidates.",
+};
+
 export default function Page() {
   return (
     <div className="flex flex-1 flex-col gap-4">

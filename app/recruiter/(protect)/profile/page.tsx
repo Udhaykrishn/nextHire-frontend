@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import { RecruiterProfileClient } from "@/modules/recruiter/components/profile/recruiter-profile-client";
+
+export const metadata: Metadata = {
+  title: "Recruiter Profile | NextHire",
+  description: "Manage your recruiter profile and company details.",
+};
 
 export default function Page() {
   return (
