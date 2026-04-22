@@ -33,7 +33,11 @@
         "useImportType": "off"
       },
       "suspicious": {
-        "noUnknownAtRules": "off"
+        "noUnknownAtRules": "off",
+        "noExplicitAny": "error"
+      },
+      "correctness": {
+        "noUnusedVariables": "error"
       }
     },
     "domains": {
