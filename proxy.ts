@@ -1,9 +1,10 @@
 import type { NextRequest } from "next/server";
+import { COOKIE_NAMES } from "@/constants/routes";
 import { NextResponse } from "next/server";
 
 export async function proxy(request: NextRequest) {
-  const accessToken = request.cookies.get("accessToken");
-  const sessionId = request.cookies.get("session_id");
+  const accessToken = request.cookies.get(COOKIE_NAMES.at);
+  const sessionId = request.cookies.get(COOKIE_NAMES.sid);
   const { pathname } = request.nextUrl;
 
   console.log("middleware working →", pathname);
@@ -58,11 +59,11 @@ export async function proxy(request: NextRequest) {
         if (data.blocked) {
           const response = NextResponse.redirect(getLoginUrl(inferredPrefix));
 
-          response.cookies.set("accessToken", "", {
+          response.cookies.set(COOKIE_NAMES.at, "", {
             expires: new Date(0),
             path: "/",
           });
-          response.cookies.set("session_id", "", {
+          response.cookies.set(COOKIE_NAMES.sid, "", {
             expires: new Date(0),
             path: "/",
           });
@@ -113,7 +114,7 @@ export async function proxy(request: NextRequest) {
 
       const response = NextResponse.redirect(getLoginUrl(inferredPrefix));
 
-      response.cookies.set("session_id", "", {
+      response.cookies.set(COOKIE_NAMES.sid, "", {
         expires: new Date(0),
         path: "/",
       });
@@ -124,7 +125,7 @@ export async function proxy(request: NextRequest) {
 
       const response = NextResponse.redirect(getLoginUrl(inferredPrefix));
 
-      response.cookies.set("session_id", "", {
+      response.cookies.set(COOKIE_NAMES.sid, "", {
         expires: new Date(0),
         path: "/",
       });

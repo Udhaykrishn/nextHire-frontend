@@ -14,7 +14,9 @@ export const ROUTES = {
   },
 } as const;
 
+const getEnvValue = (key: string, defaultValue: string) => process.env[key] || defaultValue;
+
 export const COOKIE_NAMES = {
-  ACCESS_TOKEN: "accessToken",
-  SESSION_ID: "session_id",
+  at: getEnvValue("NEXT_PUBLIC_COOKIE_ACCESS_TOKEN", "accessToken"),
+  sid: getEnvValue("NEXT_PUBLIC_COOKIE_SESSION_ID", "session_id"),
 } as const;
