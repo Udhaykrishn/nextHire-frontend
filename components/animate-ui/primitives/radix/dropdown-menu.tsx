@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, type HTMLMotionProps, motion } from "motion/react";
+import { AnimatePresence, type HTMLMotionProps, m } from "motion/react";
 import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui";
 import * as React from "react";
 
@@ -158,7 +158,7 @@ function DropdownMenuSubTrigger({
       textValue={textValue}
       asChild
     >
-      <motion.div
+      <m.div
         data-slot="dropdown-menu-sub-trigger"
         data-disabled={disabled}
         {...props}
@@ -219,14 +219,14 @@ function DropdownMenuSubContent({
             sticky={sticky}
             hideWhenDetached={hideWhenDetached}
           >
-            <motion.div
+            <m.div
               key="dropdown-menu-sub-content"
               data-slot="dropdown-menu-sub-content"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={transition}
-              style={{ willChange: "opacity, transform", ...style }}
+              style={style}
               {...props}
             />
           </DropdownMenuPrimitive.SubContent>
@@ -318,14 +318,14 @@ function DropdownMenuContent({
             sticky={sticky}
             hideWhenDetached={hideWhenDetached}
           >
-            <motion.div
+            <m.div
               key="dropdown-menu-content"
               data-slot="dropdown-menu-content"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={transition}
-              style={{ willChange: "opacity, transform", ...style }}
+              style={style}
               {...props}
             />
           </DropdownMenuPrimitive.Content>
@@ -374,7 +374,7 @@ function DropdownMenuItem({
       textValue={textValue}
       asChild
     >
-      <motion.div
+      <m.div
         data-slot="dropdown-menu-item"
         data-disabled={disabled}
         {...props}
@@ -420,7 +420,7 @@ function DropdownMenuCheckboxItem({
       textValue={textValue}
       asChild
     >
-      <motion.div
+      <m.div
         data-slot="dropdown-menu-checkbox-item"
         data-disabled={disabled}
         {...props}
@@ -464,7 +464,7 @@ function DropdownMenuRadioItem({
       textValue={textValue}
       asChild
     >
-      <motion.div
+      <m.div
         data-slot="dropdown-menu-radio-item"
         data-disabled={disabled}
         {...props}
@@ -514,7 +514,7 @@ function DropdownMenuItemIndicator(props: DropdownMenuItemIndicatorProps) {
       data-slot="dropdown-menu-item-indicator"
       asChild
     >
-      <motion.div {...props} />
+      <m.div {...props} />
     </DropdownMenuPrimitive.ItemIndicator>
   );
 }

@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
-import { COOKIE_NAMES } from "@/constants/routes";
 import { NextResponse } from "next/server";
+import { COOKIE_NAMES } from "@/constants/routes";
 
 export async function proxy(request: NextRequest) {
   const accessToken = request.cookies.get(COOKIE_NAMES.at);

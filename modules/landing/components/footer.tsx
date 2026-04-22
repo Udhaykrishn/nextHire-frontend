@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export function Footer() {
   return (
     <footer className="bg-slate-900 pt-20 pb-10 px-4">
@@ -18,19 +20,28 @@ export function Footer() {
             </h4>
             <ul className="space-y-2 text-slate-400 font-medium">
               <li>
-                <a href="/" className="hover:text-cyan-400 transition-colors">
+                <Link
+                  href="/"
+                  className="hover:text-cyan-400 transition-colors"
+                >
                   Find Jobs
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/" className="hover:text-cyan-400 transition-colors">
+                <Link
+                  href="/"
+                  className="hover:text-cyan-400 transition-colors"
+                >
                   Post a Job
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/" className="hover:text-cyan-400 transition-colors">
+                <Link
+                  href="/"
+                  className="hover:text-cyan-400 transition-colors"
+                >
                   Browse Companies
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -40,19 +51,28 @@ export function Footer() {
             </h4>
             <ul className="space-y-2 text-slate-400 font-medium">
               <li>
-                <a href="/" className="hover:text-cyan-400 transition-colors">
+                <Link
+                  href="/"
+                  className="hover:text-cyan-400 transition-colors"
+                >
                   About Us
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/" className="hover:text-cyan-400 transition-colors">
+                <Link
+                  href="/"
+                  className="hover:text-cyan-400 transition-colors"
+                >
                   Contact
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/" className="hover:text-cyan-400 transition-colors">
+                <Link
+                  href="/"
+                  className="hover:text-cyan-400 transition-colors"
+                >
                   Privacy Policy
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { type HTMLMotionProps, motion } from "motion/react";
+import { type HTMLMotionProps, m } from "motion/react";
 
 import {
   Slot,
@@ -20,8 +20,7 @@ function Button({
   asChild = false,
   ...props
 }: ButtonProps) {
-  const Component = asChild ? Slot : motion.button;
-
+  const Component = asChild ? Slot : m.button;
   return (
     <Component
       whileTap={{ scale: tapScale }}

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { m } from "motion/react";
 import { cn } from "@/lib/utils";
 
 interface SlidingNumberProps {
@@ -24,7 +24,7 @@ function Digit({ value }: { value: string }) {
         fontVariantNumeric: "tabular-nums",
       }}
     >
-      <motion.div
+      <m.div
         initial={false}
         animate={{ y: `-${numericValue * 10}%` }}
         transition={{
@@ -36,13 +36,13 @@ function Digit({ value }: { value: string }) {
       >
         {Array.from({ length: 10 }).map((_, i) => (
           <span
-            key={i}
+            key={`digit-${i}`}
             className="flex h-[1em] items-center justify-center leading-none"
           >
             {i}
           </span>
         ))}
-      </motion.div>
+      </m.div>
     </div>
   );
 }
@@ -63,7 +63,7 @@ export function SlidingNumber({
       className={cn("inline-flex items-end font-mono leading-none", className)}
     >
       {digits.map((digit, index) => (
-        <Digit key={index} value={digit} />
+        <Digit key={`pos-${index}-${digit}`} value={digit} />
       ))}
     </div>
   );

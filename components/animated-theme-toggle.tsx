@@ -2,7 +2,6 @@
 
 import { Monitor, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
 import {
   type ThemeSelection,
   ThemeToggler,
@@ -18,15 +17,6 @@ export function AnimatedThemeToggle({
   className = "",
 }: AnimatedThemeToggleProps) {
   const { theme, setTheme, resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return null;
-  }
 
   const currentTheme = (theme as ThemeSelection) || "system";
   const currentResolved = (resolvedTheme as "light" | "dark") || "light";
@@ -48,13 +38,14 @@ export function AnimatedThemeToggle({
           }}
           className={`rounded-lg border border-zinc-300 bg-white p-3 shadow-sm transition-colors hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:hover:bg-zinc-700 ${className}`}
           aria-label="Toggle theme"
+          suppressHydrationWarning
         >
           {effective === "system" ? (
-            <Monitor className="h-5 w-5" />
+            <Monitor className="h-5 w-5" suppressHydrationWarning />
           ) : effective === "dark" ? (
-            <Moon className="h-5 w-5" />
+            <Moon className="h-5 w-5" suppressHydrationWarning />
           ) : (
-            <Sun className="h-5 w-5" />
+            <Sun className="h-5 w-5" suppressHydrationWarning />
           )}
         </button>
       )}

@@ -45,13 +45,6 @@ export function DataTable<T>({
   getRowKey,
   isLoading,
 }: DataTableProps<T>) {
-  const renderCell = (row: T, column: Column<T>) => {
-    if (typeof column.accessor === "function") {
-      return column.accessor(row);
-    }
-    return row[column.accessor] as ReactNode;
-  };
-
   return (
     <div className="rounded-md border">
       <Table>
@@ -92,7 +85,9 @@ export function DataTable<T>({
                       key={column.id || column.header}
                       className={column.className}
                     >
-                      {renderCell(row, column)}
+                      {typeof column.accessor === "function"
+                        ? column.accessor(row)
+                        : (row[column.accessor] as ReactNode)}
                     </TableCell>
                   ))}
                   {actions && actions.length > 0 && (
