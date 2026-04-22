@@ -1,53 +1,16 @@
-export const dynamic = "force-dynamic";
+import type { Metadata } from "next";
+import { Suspense } from "react";
+import { RecruitersClient } from "./recruiters-client";
 
-import { RecruiterManagementService } from "@/services/admin/recruiter-management.service";
-import { RecruitersTabs } from "./recruiters-tabs";
+export const metadata: Metadata = {
+  title: "Recruiter Management | Admin",
+  description: "Manage recruiter accounts and business profiles.",
+};
 
-interface PageProps {
-  searchParams: Promise<{
-    page?: string;
-    limit?: string;
-    search?: string;
-    status?: string;
-  }>;
-}
-
-export default async function RecruitersPage(props: PageProps) {
-  const searchParams = await props.searchParams;
-  const page = Number(searchParams.page) || 1;
-  const limit = Number(searchParams.limit) || 5;
-  const search = searchParams.search || "";
-  const status = searchParams.status || "active";
-
-  try {
-    const { data: recruiters } =
-      await RecruiterManagementService.getAllRecruiters({
-        page,
-        limit,
-        search,
-        status,
-      });
-
-    return (
-      <RecruitersTabs
-        recruitersData={recruiters}
-        currentStatus={status}
-        currentPage={page}
-        limit={limit}
-        search={search}
-      />
-    );
-  } catch (error) {
-    console.error("Error fetching recruiters:", error);
-
-    return (
-      <RecruitersTabs
-        recruitersData={{ data: [], total: 0, page: 0 }}
-        currentStatus={status}
-        currentPage={page}
-        limit={limit}
-        search={search}
-      />
-    );
-  }
+export default function RecruitersPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <RecruitersClient />
+    </Suspense>
+  );
 }

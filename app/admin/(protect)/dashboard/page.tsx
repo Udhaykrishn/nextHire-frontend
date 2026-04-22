@@ -1,4 +1,10 @@
 import { Activity, Briefcase, Building2, Users } from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Admin Dashboard | NextHire",
+  description: "Monitor platform performance and manage users.",
+};
 
 export default function AdminDashboardPage() {
   return (

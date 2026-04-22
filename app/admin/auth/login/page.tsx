@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import { LoginContent } from "./login-client";
+
+export const metadata: Metadata = {
+  title: "Admin Login | NextHire",
+  description: "Secure login for NextHire administrators.",
+};
 
 export default function AdminPage() {
   return (
